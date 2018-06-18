@@ -1,0 +1,32 @@
+dist: trusty
+sudo: false
+language: php
+
+services:
+  - mysql
+
+matrix:
+  include:
+    - env: branch=REL1_31 dbtype=mysql dbuser=root
+      php: 7.2
+
+before_script:
+  - git clone --depth 1 https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
+  - cd mediawiki
+  - composer install --prefer-dist --quiet --no-interaction
+  - >
+      php maintenance/install.php traviswiki admin
+      --pass travis
+      --dbtype "$dbtype"
+      --dbname traviswiki
+      --dbuser "$dbuser"
+      --dbpass ""
+      --scriptpath "/w"
+  - php -l ./LocalSettings.php
+
+script:
+  - php tests/phpunit/phpunit.php ../tests
+
+notifications:
+  email:
+    - edwardspec@gmail.com
