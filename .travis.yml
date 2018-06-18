@@ -4,6 +4,7 @@ language: php
 
 services:
   - mysql
+  - memcached
 
 matrix:
   include:
