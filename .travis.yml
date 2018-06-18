@@ -29,7 +29,7 @@ before_script:
       --dbpass ""
       --scriptpath "/w"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-  - echo 'wfLoadExtension( "Moderation" );' >>./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
 
