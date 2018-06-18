@@ -25,6 +25,7 @@ before_script:
   - unzip master.zip
   - mv mediawiki-moderation-master mediawiki/extensions/Moderation
   - cd mediawiki
+  - patch -p1 <../patches/gerrit440976.patch
   - wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php -O includes/DevelopmentSettings.php
   - composer install --prefer-dist --quiet --no-interaction
   - composer update phpunit/phpunit
