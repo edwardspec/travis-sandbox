@@ -14,11 +14,11 @@ matrix:
 
 before_script:
   - git clone --depth 1 https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
-  - wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php -O includes/DevelopmentSettings.php
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
   - mv mediawiki-moderation-master mediawiki/extensions/Moderation
   - cd mediawiki
+  - wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php -O includes/DevelopmentSettings.php
   - composer install --prefer-dist --quiet --no-interaction
   - >
       php maintenance/install.php traviswiki admin
