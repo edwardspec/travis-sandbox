@@ -16,7 +16,6 @@ matrix:
       php: hhvm-3.24
 
 before_script:
-  - phpenv config-rm xdebug.ini
   - if [[ $TRAVIS_PHP_VERSION = hhvm* ]]; then phpenv config-add phpconf/hhvm.ini; fi
   - git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
