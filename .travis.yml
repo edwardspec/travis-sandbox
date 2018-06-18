@@ -32,10 +32,7 @@ before_script:
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
+  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
 
 script:
   - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
-
-notifications:
-  email:
-    - edwardspec@gmail.com
