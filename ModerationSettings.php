@@ -1,7 +1,7 @@
 <?php
 
 $wgEnableUploads = true; # For upload-related tests
-wfLoadSkin( 'vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
+wfLoadSkin( 'Vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
 
 wfLoadExtension( "Moderation" ); # Tested extension
 
