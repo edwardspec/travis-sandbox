@@ -1,8 +1,9 @@
 <?php
 
-$wgEnableUploads = true;
+$wgEnableUploads = true; # For upload-related tests
+wfLoadSkin( 'vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
 
-wfLoadExtension( "Moderation" );
+wfLoadExtension( "Moderation" ); # Tested extension
 
 # Disable display_errors from DevelopmentSettings.php
 # (interferes with ModerationTestsuiteCliEngine)
