@@ -5,7 +5,7 @@
 	being enabled when executing MediaWiki code.
 */
 
-require_once __DIR__ . '/Maintenance.php';
+require_once 'Maintenance.php';
 
 class UopzTest extends Maintenance {
 	public function execute() {

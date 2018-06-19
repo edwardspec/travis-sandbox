@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash
 ###############################################################################
 # Assemble the directory with MediaWiki
 # Usage: ./build_mediawiki REL1_31
