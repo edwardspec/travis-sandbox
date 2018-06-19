@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: php
 
 git:
@@ -24,6 +24,8 @@ cache:
     - buildcache
 
 before_script:
+  - ulimit -c unlimited
+  - echo core >/proc/sys/kernel/core_pattern
   - pecl install uopz
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
@@ -48,6 +50,10 @@ before_script:
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
 
 script:
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationTestInterceptEdit.php
+  - ls -l core*
+  - for dumpfile in core*; do echo "Core dump $dumpfile"; gdb $dumpfile -ex "thread apply all bt" -ex "set pagination 0" -batch; done
+
 #  - time php maintenance/runScript.php ../uopz-test/process.php
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
 
