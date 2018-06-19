@@ -24,7 +24,7 @@ cache:
     - buildcache
 
 before_script:
-#  - pecl install uopz
+  - pecl install uopz
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
