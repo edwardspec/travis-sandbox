@@ -28,7 +28,6 @@ before_script:
   - patch -p1 <../patches/gerrit440976.patch
   - wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php -O includes/DevelopmentSettings.php
   - composer install --prefer-dist --quiet --no-interaction
-  - composer update phpunit/phpunit
   - >
       php maintenance/install.php traviswiki admin
       --pass travis
