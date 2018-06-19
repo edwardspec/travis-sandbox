@@ -50,6 +50,7 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
+  - composer require phpunit/phpunit 6.5.*
 
 script:
   - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationTestInterceptEdit.php
