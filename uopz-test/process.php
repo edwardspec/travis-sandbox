@@ -7,6 +7,8 @@ class ShellExecTest extends Maintenance {
 			"maintenance/runScript.php",
 			__DIR__ . "/subprocess.php"
 		);
+
+		echo "Executing [$cmd]...\n";
 		var_dump( wfShellExec( $cmd ) );
 	}
 }
