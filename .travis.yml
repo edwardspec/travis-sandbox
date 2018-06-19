@@ -25,7 +25,8 @@ cache:
 
 before_script:
   - pecl install uopz
-  - build_mediawiki.sh "$branch"
+  - chmod +x ./build_mediawiki.sh
+  - ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
   - mv mediawiki-moderation-master mediawiki/extensions/Moderation
