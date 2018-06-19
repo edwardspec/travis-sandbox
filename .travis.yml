@@ -19,16 +19,17 @@ matrix:
 #    - env: branch=REL1_27 dbtype=mysql dbuser=root
 #      php: 5.6
 
+cache:
+  directories:
+    - buildcache
+
 before_script:
   - pecl install uopz
-  - git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
+  - build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
   - mv mediawiki-moderation-master mediawiki/extensions/Moderation
   - cd mediawiki
-  - patch -p1 <../patches/gerrit440976.patch
-  - wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php -O includes/DevelopmentSettings.php
-  - composer install --prefer-dist --quiet --no-interaction
   - >
       php maintenance/install.php traviswiki admin
       --pass travis
@@ -46,3 +47,4 @@ before_script:
 script:
   - time php maintenance/runScript.php ../uopz-test/process.php
 #  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+
