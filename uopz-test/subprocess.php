@@ -5,6 +5,8 @@
 	being enabled when executing MediaWiki code.
 */
 
+require_once __DIR__ . '/Maintenance.php';
+
 class UopzTest extends Maintenance {
 	public function execute() {
 		if ( function_exists( 'uopz_set_return' ) ) {
