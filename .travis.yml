@@ -17,6 +17,7 @@ matrix:
       php: 5.6
 
 before_script:
+  - pecl install uopz
   - git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
