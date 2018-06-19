@@ -46,3 +46,4 @@ before_script:
 
 script:
   - time php maintenance/runScript.php ../uopz-test/process.php
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
