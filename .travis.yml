@@ -24,7 +24,7 @@ cache:
     - buildcache
 
 before_script:
-#  - pecl install uopz
+  - pecl install uopz
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
@@ -46,7 +46,9 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
+  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-cli-gdb.patch && cd -
 
 script:
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
 

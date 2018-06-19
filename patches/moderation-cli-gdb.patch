@@ -1,0 +1,13 @@
+diff --git a/tests/phpunit/framework/engine/cli/ModerationTestsuiteCliEngine.php b/tests/phpunit/framework/engine/cli/ModerationTestsuiteCliEngine.php
+index 1cf93ed..e90b135 100644
+--- a/tests/phpunit/framework/engine/cli/ModerationTestsuiteCliEngine.php
++++ b/tests/phpunit/framework/engine/cli/ModerationTestsuiteCliEngine.php
+@@ -137,6 +137,8 @@ class ModerationTestsuiteCliEngine extends ModerationTestsuiteRealHttpEngine {
+ 			$outputFilename
+ 		);
+ 
++		$cmd = 'gdb -return-child-result --batch -ex run -ex "thread apply all bt" -ex "quit" --args ' . $cmd;
++
+ 		$limits = [ 'memory' => -1, 'filesize' => -1, 'time' => -1, 'walltime' => -1 ];
+ 
+ 		$retval = false;
