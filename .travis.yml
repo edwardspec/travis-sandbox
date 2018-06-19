@@ -16,10 +16,11 @@ matrix:
 #    - env: branch=REL1_27 dbtype=mysql dbuser=root
 #      php: 5.6
     - env: branch=REL1_31 dbtype=mysql dbuser=root
-      php: hhvm-nightly
+      php: hhvm-3.18
+    - env: branch=REL1_27 dbtype=mysql dbuser=root
+      php: hhvm-3.18
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION = hhvm* ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
   - if [[ $TRAVIS_PHP_VERSION = hhvm* ]]; then phpenv config-add phpconf/hhvm.ini; fi
   - git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
