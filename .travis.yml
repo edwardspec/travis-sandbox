@@ -22,7 +22,7 @@ cache:
 
 before_script:
   - pecl install uopz
-  - [ -d mediawiki ] || git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
+  - if [[ -d mediawiki ]]; then git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"; fi
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
   - mv mediawiki-moderation-master mediawiki/extensions/Moderation
