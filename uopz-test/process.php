@@ -4,6 +4,7 @@ class ShellExecTest extends Maintenance {
 	public function execute() {
 		$cmd = wfEscapeShellArg(
 			PHP_BINARY,
+			"maintenance/runScript.php",
 			__DIR__ . "/subprocess.php"
 		);
 		var_dump( wfShellExec( $cmd ) );
