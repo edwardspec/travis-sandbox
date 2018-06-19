@@ -25,7 +25,9 @@ cache:
 
 before_script:
   - ulimit -c unlimited
-  - echo core >/proc/sys/kernel/core_pattern
+  - cat /proc/sys/kernel/core_pattern
+  - sudo su -c "echo core >/proc/sys/kernel/core_pattern"
+  - cat /proc/sys/kernel/core_pattern
   - pecl install uopz
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
