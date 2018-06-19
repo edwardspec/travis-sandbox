@@ -25,7 +25,7 @@ cache:
 
 before_script:
 #  - pecl install uopz
-  - pecl install opcache
+  - php -i
   - phpenv config-add phpconf/php.ini
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
