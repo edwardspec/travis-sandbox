@@ -28,9 +28,10 @@ before_script:
 # of PHP's SEGFAULT in zend_hash_find_bucket() when uopz_set_return() was used.
   - sudo apt-get install -y gdb
   - wget https://php.net/distributions/php-7.2.6.tar.bz2
-  - tar -xjf php-7.2.6.tar.bz2
   - mkdir -p /tmp/php-build/source/7.2.6
-  - mv php-7.2.6 /tmp/php-build/source/7.2.6
+  - tar -xjf php-7.2.6.tar.bz2 -O /tmp/php-build/source/7.2.6
+  - ls /tmp/php-build/source/7.2.6
+  - ls /tmp/php-build/source/7.2.6/Zend
 ###############################################################################
   - pecl install uopz
   - phpenv config-rm xdebug.ini
