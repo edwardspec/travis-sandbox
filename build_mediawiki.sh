@@ -6,17 +6,19 @@
 
 branch=$1
 
+GITCLONE_OPTS="--depth 1 --recursive -b $branch"
+
 mkdir -p buildcache/mediawiki
 
 if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 	(
 		cd buildcache
 		rm -rf mediawiki
-		git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
+		git clone $GITCLONE_OPTS mediawiki -b "$branch"
 
 		for EXT in AbuseFilter CheckUser MobileFrontend VisualEditor
 		do
-			git clone --depth 1 --recursive \
+			git clone $GITCLONE_OPTS \
 				https://gerrit.wikimedia.org/r/p/mediawiki/extensions/$EXT.git \
 				mediawiki/extensions/$EXT
 		done
