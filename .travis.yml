@@ -12,9 +12,15 @@ services:
   - mysql
   - memcached
 
+env:
+  global:
+    - DBTYPE=mysql
+    - DBUSER=root
+    - secure: "hEeelKr8bTPTNK6ORrBba4tUWUMYAzxjXAIB3fuktFcirN9cT1NdrSaOZoczQAlcxyDR/YKypkC1tOQmWZ9hSkH7R/9VGzqqv2opH/bSeM/RTmdiFdcCAFGrGYCL4C2A69FifxvdZzJn00xk/Ku46H9dCzZhc6S0utmS1PYWXVtDfTGNpdFUwEaDB0WBoNM93O6WIbfARqxUP0z8/m6yPYo38/kH907LmUp0xi03QA6+EsImmXHOtQdwAJFmQDLOZlDEohbeXF9o2KayeRORMh+EX1yyLwqMxTszt9MjlXkKGnX0HC2+ET+AGz/Ehj0jh/N170C7hA9Seq5JA7twWsAaiIIduQJOSt+vc3wzMwTJg2JsS1/jUoavOuNBS6Bwt7W7/P3sLGMaNNccDPzRGwcSU8fUDCF6F6bVIs1qBGk5RCR1SSi18GnPuouKBdN527giOttd66uegH8yxtQ/E5bkLVottdt3yjaZD6paFpOaTQokfESH5h0WD9CM6QPu5Jn4LMObJe8WFYHqESWyXSHKyuNaa+OtSw0ZiBqlMAvoXuvH1376TZCwncPYa5hoECNhqHVDB6zvuIWXM6nUN+d5NiV7ufQALAtjB1VXBnxl3qetD05SILkIWQY37Om8fDnC4WDIyzvEnQVt++rUAX3Kc8q6xjkRXyTruEubhV8="
+
 matrix:
   include:
-    - env: branch=REL1_31 dbtype=mysql dbuser=root
+    - env: branch=REL1_31
       php: 7.2
 #    - env: branch=REL1_27 dbtype=mysql dbuser=root
 #      php: 7.1
@@ -24,30 +30,32 @@ cache:
     - buildcache
 
 before_script:
+  - echo $HELLO
   - phpenv config-rm xdebug.ini
-  - phpenv config-add phpconf/php.ini
-  - php -i
+#  - phpenv config-add phpconf/php.ini
   - bash -ex ./build_mediawiki.sh "$branch"
-  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
+  - wget https://github.com/edwardspec/mediawiki-aws-s3-stable-fork/archive/master.zip
   - unzip master.zip
-  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
+  - mv mediawiki-aws-s3-stable-fork-master mediawiki/extensions/AWS
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
       --pass travis
-      --dbtype "$dbtype"
+      --dbtype "$DBTYPE"
       --dbname traviswiki
-      --dbuser "$dbuser"
+      --dbuser "$DBUSER"
       --dbpass ""
       --scriptpath "/w"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/../AWSSettings.php';\n" >> ./LocalSettings.php
+#  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
-  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
-  - grep needsDB tests/phpunit/MediaWikiTestCase.php
-  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-vardump-rctags.patch && cd -
+#  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
+#  - grep needsDB tests/phpunit/MediaWikiTestCase.php
+#  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-vardump-rctags.patch && cd -
 
 script:
 #  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationAbuseFilterTest.php
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationAbuseFilterTest.php
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/AWS/tests/phpunit/
