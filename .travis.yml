@@ -16,8 +16,8 @@ matrix:
   include:
     - env: branch=REL1_31 dbtype=mysql dbuser=root
       php: 7.2
-    - env: branch=REL1_27 dbtype=mysql dbuser=root
-      php: 7.1
+#    - env: branch=REL1_27 dbtype=mysql dbuser=root
+#      php: 7.1
 
 cache:
   directories:
@@ -55,7 +55,7 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
-#  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-cli-gdb.patch && cd -
+  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-cli-gdb.patch && cd -
   - cd extensions/Moderation && patch -p1 <../../../patches/moderation-disable-header_register_callback.patch-2 && cd -
 #  - sed -i 's/^.*header_register_callback.*$//' includes/HeaderCallback.php
 
@@ -63,4 +63,4 @@ before_script:
 
 
 script:
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
