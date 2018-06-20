@@ -1,0 +1,13 @@
+diff --git a/tests/phpunit/ModerationAbuseFilterTest.php b/tests/phpunit/ModerationAbuseFilterTest.php
+index cd2e6a3..a232120 100644
+--- a/tests/phpunit/ModerationAbuseFilterTest.php
++++ b/tests/phpunit/ModerationAbuseFilterTest.php
+@@ -120,6 +120,8 @@ class ModerationTestAbuseFilter extends MediaWikiTestCase
+ 		] );
+ 		$rc = $ret['query']['recentchanges'][0];
+ 
++		var_dump( [ 'Last entry in "recentchanges" table after Approve:' => $ret ] );
++
+ 		/* Make sure it's a correct change */
+ 		$this->assertEquals( $t->lastEdit['User'], $rc['user'] );
+ 		$this->assertEquals( $t->lastEdit['Title'], $rc['title'] );
