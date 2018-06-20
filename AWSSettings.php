@@ -3,10 +3,6 @@
 $KEY = getenv( 'AWS_KEY' );
 $SECRET = getenv( 'AWS_SECRET' );
 $BUCKET_PREFIX = getenv( 'AWS_BUCKET_PREFIX' );
-
-# Test if above-mentioned variables are in fact available
-echo "Length of the bucket prefix is " . strlen( "$BUCKET_PREFIX" ) . "\n";
-
 ###############################################################################
 
 require_once( "$IP/extensions/AWS/AWS.php" );
@@ -17,7 +13,7 @@ $wgAWSCredentials['secret'] = $SECRET;
 $wgAWSRegion = 'us-east-1'; # Northern Virginia
 
 $wgFileBackends['s3']['containerPaths'] = [
-	"$wgDBname-local-public" => "${BUCKET_PREFIX}",
+	"$wgDBname-local-public" => "${BUCKET_PREFIX}-img",
 	"$wgDBname-local-thumb" => "${BUCKET_PREFIX}-thumb",
 	"$wgDBname-local-deleted" => "${BUCKET_PREFIX}-deleted",
 	"$wgDBname-local-temp" => "${BUCKET_PREFIX}-temp"
