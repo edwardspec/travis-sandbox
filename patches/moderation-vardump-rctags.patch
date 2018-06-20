@@ -1,8 +1,17 @@
 diff --git a/tests/phpunit/ModerationAbuseFilterTest.php b/tests/phpunit/ModerationAbuseFilterTest.php
-index cd2e6a3..a232120 100644
+index cd2e6a3..0002d3a 100644
 --- a/tests/phpunit/ModerationAbuseFilterTest.php
 +++ b/tests/phpunit/ModerationAbuseFilterTest.php
-@@ -120,6 +120,8 @@ class ModerationTestAbuseFilter extends MediaWikiTestCase
+@@ -112,6 +112,8 @@ class ModerationTestAbuseFilter extends MediaWikiTestCase
+ 		$t->httpGet( $entry->approveLink );
+ 		$waiter( 1 );
+ 
++		sleep( 3 );
++
+ 		$ret = $t->query( [
+ 			'action' => 'query',
+ 			'list' => 'recentchanges',
+@@ -120,6 +122,8 @@ class ModerationTestAbuseFilter extends MediaWikiTestCase
  		] );
  		$rc = $ret['query']['recentchanges'][0];
  
