@@ -14,7 +14,7 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 	(
 		cd buildcache
 		rm -rf mediawiki
-		git clone $GITCLONE_OPTS mediawiki -b "$branch"
+		git clone $GITCLONE_OPTS https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
 
 		for EXT in AbuseFilter CheckUser MobileFrontend VisualEditor
 		do
