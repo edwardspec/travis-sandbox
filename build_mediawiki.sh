@@ -11,6 +11,7 @@ mkdir -p buildcache/mediawiki
 if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 	(
 		cd buildcache
+		rm -rf mediawiki
 		git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
 
 		cd mediawiki
