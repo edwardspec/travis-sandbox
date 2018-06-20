@@ -1,5 +1,7 @@
 <?php
 
+$wgJobRunRate = 1000;
+
 $wgEnableUploads = true; # For upload-related tests
 wfLoadSkin( 'Vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
 
