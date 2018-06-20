@@ -56,7 +56,7 @@ before_script:
   - php maintenance/update.php --quick
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
 #  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-cli-gdb.patch && cd -
-  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-disable-header_register_callback.patch && cd -
+  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-disable-header_register_callback.patch-2 && cd -
 #  - sed -i 's/^.*header_register_callback.*$//' includes/HeaderCallback.php
 
 

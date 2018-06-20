@@ -1,0 +1,15 @@
+diff --git a/tests/phpunit/framework/engine/cli/InvokedWikiSettings.php b/tests/phpunit/framework/engine/cli/InvokedWikiSettings.php
+index d553f27..566344a 100644
+--- a/tests/phpunit/framework/engine/cli/InvokedWikiSettings.php
++++ b/tests/phpunit/framework/engine/cli/InvokedWikiSettings.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++if ( function_exists( 'uopz_set_return' ) ) {
++	/* Disable header_register_callback(), causes segfault in uopz */
++	uopz_set_return( 'header_register_callback', function($unused) {}, true );
++}
++
+ # Load the usual LocalSettings.php
+ require_once "$IP/LocalSettings.php";
+ 
