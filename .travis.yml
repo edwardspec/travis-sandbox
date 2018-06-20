@@ -39,6 +39,7 @@ before_script:
   - wget https://github.com/edwardspec/mediawiki-aws-s3-stable-fork/archive/master.zip
   - unzip master.zip
   - mv mediawiki-aws-s3-stable-fork-master mediawiki/extensions/AWS
+  - cd mediawiki/extensions/AWS && composer install && cd -
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
