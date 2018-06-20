@@ -14,6 +14,13 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 		rm -rf mediawiki
 		git clone --depth 1 --recursive https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki -b "$branch"
 
+		for EXT in AbuseFilter CheckUser MobileFrontend VisualEditor
+		do
+			git clone --depth 1 --recursive \
+				https://gerrit.wikimedia.org/r/p/mediawiki/extensions/$EXT.git \
+				mediawiki/extensions/$EXT
+		done
+
 		cd mediawiki
 		patch -p1 <../../patches/gerrit440976.patch
 
