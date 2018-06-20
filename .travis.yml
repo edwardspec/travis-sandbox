@@ -24,16 +24,6 @@ cache:
     - buildcache
 
 before_script:
-# Install gdb and unpack sources of PHP to obtain a nice stack trace
-# of PHP's SEGFAULT in zend_hash_find_bucket() when uopz_set_return() was used.
-#  - wget https://php.net/distributions/php-7.2.6.tar.bz2
-#  - mkdir -p /tmp/php-build/source
-#  - tar -xjf php-7.2.6.tar.bz2
-#  - rm -rf /tmp/php-build/source/7.2.6
-#  - mv php-7.2.6 /tmp/php-build/source/7.2.6
-#  - sudo apt-get install -y gdb
-###############################################################################
-#  - pecl install uopz
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
@@ -55,10 +45,6 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
-#  - cd extensions/Moderation && patch -p1 <../../../patches/moderation-cli-gdb.patch && cd -
-# Remove the use of header_register_callback(), causes PHP7.2+uopz to segfault
-#  - if [ -f includes/HeaderCallback.php ]; then sed -i 's/^.*header_register_callback.*$//' includes/HeaderCallback.php; fi
-#  - grep header includes/HeaderCallback.php
 
 script:
   - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
