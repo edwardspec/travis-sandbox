@@ -4,6 +4,9 @@ $KEY = getenv( 'AWS_KEY' );
 $SECRET = getenv( 'AWS_SECRET' );
 $BUCKET_PREFIX = getenv( 'AWS_BUCKET_PREFIX' );
 
+# Test if above-mentioned variables are in fact available
+echo "Length of the bucket prefix is " . strlen( "$BUCKET_PREFIX" ) . "\n";
+
 ###############################################################################
 
 require_once( "$IP/extensions/AWS/AWS.php" );
@@ -25,7 +28,6 @@ $wgLocalFileRepo = array (
 	'name'              => 'local',
 	'backend'           => 'AmazonS3',
 	'scriptDirUrl'      => $wgScriptPath,
-	'scriptExtension'   => $wgScriptExtension,
 	'url'               => $wgScriptPath . '/img_auth.php',
 	'hashLevels'        => 0,
 	'zones'             => [
