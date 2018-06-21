@@ -31,8 +31,8 @@ cache:
     - buildcache
 
 before_script:
-#  - phpenv config-rm xdebug.ini
-#  - phpenv config-add phpconf/php.ini
+  - phpenv config-rm xdebug.ini
+  - phpenv config-add phpconf/php.ini
   - php -i
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
@@ -55,6 +55,5 @@ before_script:
   - grep needsDB tests/phpunit/MediaWikiTestCase.php
 
 script:
-#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
-  - MODERATION_TEST_ENGINE=cli hhvm -v Eval.Jit=0 tests/phpunit/phpunit.php extensions/Moderation/
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
 
