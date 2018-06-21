@@ -19,8 +19,10 @@ env:
 
 matrix:
   include:
+#    - env: branch=REL1_31
+#      php: 7.2
     - env: branch=REL1_31
-      php: 7.2
+      php: hhvm-3.18
 #    - env: branch=REL1_27
 #      php: 7.1
 #    - env: branch=REL1_27
@@ -55,4 +57,6 @@ before_script:
   - grep needsDB tests/phpunit/MediaWikiTestCase.php
 
 script:
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+  - MODERATION_TEST_ENGINE=cli hhvm -v Eval.Jit=0 tests/phpunit/phpunit.php extensions/Moderation/
+
