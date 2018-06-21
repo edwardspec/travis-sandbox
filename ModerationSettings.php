@@ -3,8 +3,6 @@
 $wgEnableUploads = true; # For upload-related tests
 wfLoadSkin( 'Vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
 
-wfLoadExtension( "Moderation" ); # Tested extension
-
 $wgMainCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = [ "127.0.0.1:11211" ];
 
@@ -18,3 +16,6 @@ wfLoadExtensions( [
 # they are not needed for PHPUnit testsuite to run.
 # wfLoadExtension( 'MobileFrontend' );
 # wfLoadExtension( 'VisualEditor' );
+
+# Tested extension
+wfLoadExtension( "Moderation" );
