@@ -30,6 +30,8 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 			wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php \
 				-O includes/DevelopmentSettings.php
 
+		find . -name .git -exec rm -rf {} \;
+
 		composer install --prefer-dist --quiet --no-interaction
 		touch COMPLETE # Mark this buildcache as usable
 	)
