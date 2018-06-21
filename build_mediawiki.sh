@@ -24,8 +24,6 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 		done
 
 		cd mediawiki
-		patch -p1 <../../patches/gerrit440976.patch
-
 		[[ -f includes/DevelopmentSettings.php ]] || \
 			wget https://raw.githubusercontent.com/wikimedia/mediawiki/master/includes/DevelopmentSettings.php \
 				-O includes/DevelopmentSettings.php
