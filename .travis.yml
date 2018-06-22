@@ -43,7 +43,7 @@ before_script:
   - mkdir -p ~/.aws
   - echo -en "\n[default]\naws_access_key_id = ${AWS_KEY}\naws_secret_access_key = ${AWS_SECRET}\n" >>~/.aws/credentials
   - echo -en "\n[default]\nregion = us-east-1\n" >>~/.aws/config
-  - chmod 600 -R ~/.aws
+  - chmod 600 -R ~/.aws/*
 
 script:
   - echo Hi >hello.world
