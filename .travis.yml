@@ -38,7 +38,7 @@ before_script:
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
   - export AWS_S3_TEST_BUCKET="${AWS_BUCKET_PREFIX}-img"
-  - export AWS_S3_TEST_PATH="${AWS_S3_TEST_BUCKET}-img/cleanuptest$(LC_ALL=C date +'%s')-$TRAVIS_BUILD_ID-$TRAVIS_BUILD_NUMBER"
+  - export AWS_S3_TEST_PATH="${AWS_S3_TEST_BUCKET}/cleanuptest$(LC_ALL=C date +'%s')-$TRAVIS_BUILD_ID-$TRAVIS_BUILD_NUMBER"
   - aws --version
   - mkdir -p ~/.aws
   - echo -en "\n[default]\naws_access_key_id = ${AWS_KEY}\naws_secret_access_key = ${AWS_SECRET}\n" >>~/.aws/credentials
