@@ -42,6 +42,9 @@ before_script:
 
 script:
   - aws --version
+  - echo -en "\n[default]\naws_access_key_id = ${AWS_KEY}\naws_secret_access_key = ${AWS_SECRET}\n" >>~/.aws/credentials
+  - echo -en "\n[default]\nregion = us-east-1\n" >>~/.aws/config
+  - chmod 600 -R ~/.aws
   - echo Hi >hello.world
   - aws s3 cp hello.world s3://${AWS_S3_TEST_PATH}/
   - aws s3 ls --recursive "${AWS_S3_TEST_PATH}"
