@@ -9,8 +9,8 @@ notifications:
   email: false
 
 services:
-  - mysql
-  - memcached
+#  - mysql
+#  - memcached
 
 env:
   global:
@@ -26,34 +26,42 @@ matrix:
 #    - env: branch=REL1_27
 #      php: 5.6
 
-cache:
-  directories:
-    - buildcache
+#cache:
+#  directories:
+#    - buildcache
 
 before_script:
-  - phpenv config-rm xdebug.ini
-  - phpenv config-add phpconf/php.ini
-  - php -i
-  - bash -ex ./build_mediawiki.sh "$branch"
-  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
-  - unzip master.zip
-  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
-  - cd mediawiki
-  - >
-      php maintenance/install.php traviswiki admin
-      --pass travis
-      --dbtype "$DBTYPE"
-      --dbname traviswiki
-      --dbuser "$DBUSER"
-      --dbpass ""
-      --scriptpath "/w"
-  - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
-  - php -l ./LocalSettings.php
-  - php maintenance/update.php --quick
-  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
-  - grep needsDB tests/phpunit/MediaWikiTestCase.php
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
 
 script:
-  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+  - aws --version
 
+
+#  - phpenv config-rm xdebug.ini
+#  - phpenv config-add phpconf/php.ini
+#  - php -i
+#  - bash -ex ./build_mediawiki.sh "$branch"
+#  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
+#  - unzip master.zip
+#  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
+#  - cd mediawiki
+#  - >
+#      php maintenance/install.php traviswiki admin
+#      --pass travis
+#      --dbtype "$DBTYPE"
+#      --dbname traviswiki
+#      --dbuser "$DBUSER"
+#      --dbpass ""
+#      --scriptpath "/w"
+#  - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
+#  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
+#  - php -l ./LocalSettings.php
+#  - php maintenance/update.php --quick
+#  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
+#  - grep needsDB tests/phpunit/MediaWikiTestCase.php
+#
+#script:
+#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+#
+#
