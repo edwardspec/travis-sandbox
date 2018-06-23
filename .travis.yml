@@ -46,8 +46,9 @@ before_script:
       --dbpass ""
       --scriptpath "/w"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\nrequire_once __DIR__ . '/../AWSSettings.php';\n" >> ./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/extensions/AWS/tests/travis/AWSSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
+  - echo 'var_dump( $wgFileBackends, $wgLocalFileRepo, $wgAWSRegion );' | php maintenance/eval.php
 
 script:
   - php tests/phpunit/phpunit.php extensions/AWS/tests/phpunit/
