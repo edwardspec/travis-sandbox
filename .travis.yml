@@ -9,7 +9,7 @@ notifications:
   email: false
 
 services:
-#  - mysql
+  - mysql
 #  - memcached
 
 env:
@@ -20,65 +20,34 @@ env:
     - secure: Tpl6zKEULuf0SwHfLOd9/pnSaHHshFyZ20Tgq88C7V39DZBLZIIe+TU+vmh2yh5fVXOgzdPgvR1Y3upoCUMKRloI1H/Caj8ZMgPqYA+rXzyR7lO/nmBGTFKn+G4O+nlT1C8QQEYkcg8KWMW1j07gPt9BCDFbdn9dzCVoyx/VsRvr+BmodWOnp3eBVzdrbxWgVPokt5ezuMz6jDzfFdOAdAWdne4Si43gne7ngkREBeOp02sXeG/HVoz/txve2qgkyN+ieVS4qf9xmy14qts4BM9ImMVZl7zV0u/XadAXHLBg6f9PUqEA23B3rvpZaWNhkfI+UVlRSiHNVqKwE8MGYHL+Ele74gjng4v2aFmx9oPZskB/kys9e/5GDSz5xkpSQ1+LPbHieVUEtRY/D6ft6mjOyFt/h6f2MTvGTDPUDRNFWc320lo27mKkg/JaRMeQ5OrzGQqRHBsW4zG2uZucYCI4e46LYDsDVRc+qbWQlJuNlEX062ryL4mgoxYsgWi6BXOc2lZvshC9Z6KJEV0lDnsdNjzaj2bjNo1LDeOhRsehlMJlUzH25mwFIrJq0Ma9lgUwZEEScJA5dy3QQ1SJySHBVBmknVmuEgfKbm9aiXuCdywDBy8fifm/CJfi4Xcj98MYgPbV6rPWVhoHIWJI3HBY9wZjfx/QHrdABUqSt2A=
     - secure: Bh+qZ7bXKrb6Wi6+VJkrECizEMS/9OjZ1z3q6gDJqzjsv5eZbRDoM5rlEuitLXxOblsw7JV5DV4yrdPdapcKhlOj7FpKzGN/nSRxNUg9yTsl9zZydbVXggzsYbmU/Eb4ipE+GdpsCLvtgfHrqQXzhGGjoD1R3L/y4Z60IjnM/Rs5V85Goe2jZUA11nuPU6CnP9OkT9wFHqAvJONxrEeneB4S+1sosyOfyQBxr9tM3ax1nqKBO0hRzqu0zeCUGRLwfn+zc+GR2Y0aKl/OaBvp0goOr43xdgYYm5l42ke0nE0c8Qe0y35tGp9zeqA8TyNjaXHz4U4A7IPFA5T2oDM+TIqabVAsOKpZGaNpB5UZk9GbC0cKX5MYleV0QfhxjltegnOFDsf9ks6O2UWjov5P7zyNrxOT6w4sZ2zv698xYUr2YUQ+i2oAMt4MpyxW5QDsmEOarbHTUdqzAktgx8s0nmROBre5cdeYE02nsDleZUxeTFZd48ArCZg3W6lCKxbuvWXAwXwfa1BTvXqahH6NTZcgObR2LcQX+oQzajsXwauEYFcr0r42G17lk67APqS9f6qSMeliNlRmmEY6X5tSFEXoZPcJmf5OmaQ4hSghmAZFVldlLzoGujxWcBFbi8KxFR0I8L4fQy+AGiHd2jBDhBYNkifwtjWhhLTXw3Bb1gQ=
 
-
 matrix:
   include:
-#    - env: branch=REL1_31
-#      php: 7.2
-    - env: branch=REL1_27
-      php: 7.1
-#    - env: branch=REL1_27
-#      php: 5.6
+    - env: branch=REL1_31
+      php: 7.2
 
-#cache:
-#  directories:
-#    - buildcache
+cache:
+  directories:
+    - buildcache
 
 before_script:
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
-  - export AWS_S3_TEST_BUCKET="${AWS_BUCKET_PREFIX}-img"
-  - export AWS_S3_TEST_PATH="${AWS_S3_TEST_BUCKET}/cleanuptest$(LC_ALL=C date +'%s')-$TRAVIS_BUILD_ID-$TRAVIS_BUILD_NUMBER"
-  - aws --version
-  - mkdir -p ~/.aws
-  - echo -en "\n[default]\naws_access_key_id = ${AWS_KEY}\naws_secret_access_key = ${AWS_SECRET}\n" >>~/.aws/credentials
-  - echo -en "\n[default]\nregion = us-east-1\n" >>~/.aws/config
-  - chmod 600 -R ~/.aws/*
+  - phpenv config-rm xdebug.ini
+  - bash -ex ./build_mediawiki.sh "$branch"
+  - wget https://github.com/edwardspec/mediawiki-aws-s3/archive/master.zip
+  - unzip master.zip
+  - mv mediawiki-aws-s3-master mediawiki/extensions/AWS
+  - cd mediawiki/extensions/AWS && composer install && cd -
+  - cd mediawiki
+  - >
+      php maintenance/install.php traviswiki admin
+      --pass travis
+      --dbtype "$DBTYPE"
+      --dbname traviswiki
+      --dbuser "$DBUSER"
+      --dbpass ""
+      --scriptpath "/w"
+  - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/../AWSSettings.php';\n" >> ./LocalSettings.php
+  - php -l ./LocalSettings.php
 
 script:
-  - echo Hi >hello.world
-  - aws s3 cp hello.world s3://${AWS_S3_TEST_PATH}/
-  - aws s3 ls --recursive "${AWS_S3_TEST_PATH}"
-
-after_script:
-  - aws s3 rm --recursive s3://${AWS_S3_TEST_PATH}
-  - aws s3 ls --recursive "${AWS_S3_TEST_PATH}"
-  - aws s3 ls --recursive "${AWS_S3_TEST_BUCKET}"
-
-#  - phpenv config-rm xdebug.ini
-#  - phpenv config-add phpconf/php.ini
-#  - php -i
-#  - bash -ex ./build_mediawiki.sh "$branch"
-#  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
-#  - unzip master.zip
-#  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
-#  - cd mediawiki
-#  - >
-#      php maintenance/install.php traviswiki admin
-#      --pass travis
-#      --dbtype "$DBTYPE"
-#      --dbname traviswiki
-#      --dbuser "$DBUSER"
-#      --dbpass ""
-#      --scriptpath "/w"
-#  - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-#  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
-#  - php -l ./LocalSettings.php
-#  - php maintenance/update.php --quick
-#  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
-#  - grep needsDB tests/phpunit/MediaWikiTestCase.php
-#
-#script:
-#  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
-#
-#
+  - php tests/phpunit/phpunit.php extensions/AWS/tests/phpunit/
