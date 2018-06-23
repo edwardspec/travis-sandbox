@@ -1,0 +1,14 @@
+diff --git a/tests/phpunit/AmazonS3FileBackendTest.php b/tests/phpunit/AmazonS3FileBackendTest.php
+index 2c8f888..6f78992 100644
+--- a/tests/phpunit/AmazonS3FileBackendTest.php
++++ b/tests/phpunit/AmazonS3FileBackendTest.php
+@@ -82,6 +82,9 @@ class AmazonS3FileBackendTest extends MediaWikiTestCase {
+ 			'headers' => $params['headers'],
+ 			'dst' => $params['dst']
+ 		] );
++
++		var_dump( [ 'testCreate' => [ $params, $status ] ] );
++
+ 		$this->assertTrue( $status->isGood(), 'doCreateInternal() failed' );
+ 
+ 		/* Pass $params to dependent test */
