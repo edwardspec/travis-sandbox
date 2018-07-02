@@ -10,20 +10,21 @@ notifications:
 
 services:
   - mysql
-#  - memcached
+  - memcached
 
 env:
   global:
     - DBTYPE=mysql
     - DBUSER=root
-    - secure: KyivIPwowVh9TIwYSlJsRw+InWc5msVPwJVZWyO2SQjNhGwx9m4zJc175E/yjNFB1/MDSw8SnVBUIphcQUuSsaJIPJCWgGXescKxysr2hGTtTowyg6lg70PpJQqocpuDddx7+9Z+Oyc58B+jCmko6luq5WajuFi8pPMTwr++UNA28/wRDHhffMW+AIVOXDWQaliY2tm0D6Kiq+rW6AayKADa2n2M1jLw8Z6hPRVn6hU8e4LWEoRVtXXR29ys8084qfZtC2w6fdv6EYqHe3/+pK/IwUMFGL5isT6QUF7FD+izqUG3YHMFhwLB2OpB8t7KDb2KKCdEe8EgUXcdQcSX7e9j39FqX3A4MefTam1fQMv9zUkDPx7FpPdAaeLY6RLiXIWAwJtVTm9T7DJOfnmp96/I/Pbx8XxKRaFmkv0RLb4wXOFskU4PeywzhUKLHqhBStaJx7TI2kSzYx1QRrTGY1jwgfnvudIaGPDFa3BaGwBIjnodpzgsouvBzV58PkUT8qgoWwq62NSVVQT3A3rtHnHzNeVtn/bs+OpqS2NLummFCfbBiUcnl6LGK7lbZTivUKPwo73M93wjfV39gTAOdVSsjUB0JIkzKuuXuqTZaRgODfslkM8DodhdsQOA43MI46rlgYkhqKbGXKLTJjGKwh48kbrgX0AGR8h5erWlytI=
-    - secure: Tpl6zKEULuf0SwHfLOd9/pnSaHHshFyZ20Tgq88C7V39DZBLZIIe+TU+vmh2yh5fVXOgzdPgvR1Y3upoCUMKRloI1H/Caj8ZMgPqYA+rXzyR7lO/nmBGTFKn+G4O+nlT1C8QQEYkcg8KWMW1j07gPt9BCDFbdn9dzCVoyx/VsRvr+BmodWOnp3eBVzdrbxWgVPokt5ezuMz6jDzfFdOAdAWdne4Si43gne7ngkREBeOp02sXeG/HVoz/txve2qgkyN+ieVS4qf9xmy14qts4BM9ImMVZl7zV0u/XadAXHLBg6f9PUqEA23B3rvpZaWNhkfI+UVlRSiHNVqKwE8MGYHL+Ele74gjng4v2aFmx9oPZskB/kys9e/5GDSz5xkpSQ1+LPbHieVUEtRY/D6ft6mjOyFt/h6f2MTvGTDPUDRNFWc320lo27mKkg/JaRMeQ5OrzGQqRHBsW4zG2uZucYCI4e46LYDsDVRc+qbWQlJuNlEX062ryL4mgoxYsgWi6BXOc2lZvshC9Z6KJEV0lDnsdNjzaj2bjNo1LDeOhRsehlMJlUzH25mwFIrJq0Ma9lgUwZEEScJA5dy3QQ1SJySHBVBmknVmuEgfKbm9aiXuCdywDBy8fifm/CJfi4Xcj98MYgPbV6rPWVhoHIWJI3HBY9wZjfx/QHrdABUqSt2A=
-    - secure: Bh+qZ7bXKrb6Wi6+VJkrECizEMS/9OjZ1z3q6gDJqzjsv5eZbRDoM5rlEuitLXxOblsw7JV5DV4yrdPdapcKhlOj7FpKzGN/nSRxNUg9yTsl9zZydbVXggzsYbmU/Eb4ipE+GdpsCLvtgfHrqQXzhGGjoD1R3L/y4Z60IjnM/Rs5V85Goe2jZUA11nuPU6CnP9OkT9wFHqAvJONxrEeneB4S+1sosyOfyQBxr9tM3ax1nqKBO0hRzqu0zeCUGRLwfn+zc+GR2Y0aKl/OaBvp0goOr43xdgYYm5l42ke0nE0c8Qe0y35tGp9zeqA8TyNjaXHz4U4A7IPFA5T2oDM+TIqabVAsOKpZGaNpB5UZk9GbC0cKX5MYleV0QfhxjltegnOFDsf9ks6O2UWjov5P7zyNrxOT6w4sZ2zv698xYUr2YUQ+i2oAMt4MpyxW5QDsmEOarbHTUdqzAktgx8s0nmROBre5cdeYE02nsDleZUxeTFZd48ArCZg3W6lCKxbuvWXAwXwfa1BTvXqahH6NTZcgObR2LcQX+oQzajsXwauEYFcr0r42G17lk67APqS9f6qSMeliNlRmmEY6X5tSFEXoZPcJmf5OmaQ4hSghmAZFVldlLzoGujxWcBFbi8KxFR0I8L4fQy+AGiHd2jBDhBYNkifwtjWhhLTXw3Bb1gQ=
 
 matrix:
   include:
     - env: branch=REL1_31
       php: 7.2
+#    - env: branch=REL1_27
+#      php: 7.1
+#    - env: branch=REL1_27
+#      php: 5.6
 
 cache:
   directories:
@@ -31,11 +32,12 @@ cache:
 
 before_script:
   - phpenv config-rm xdebug.ini
+  - phpenv config-add phpconf/php.ini
+  - php -i
   - bash -ex ./build_mediawiki.sh "$branch"
-  - wget https://github.com/edwardspec/mediawiki-aws-s3/archive/master.zip
+  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
   - unzip master.zip
-  - mv mediawiki-aws-s3-master mediawiki/extensions/AWS
-  - cd mediawiki/extensions/AWS && composer install && cd -
+  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
@@ -46,10 +48,12 @@ before_script:
       --dbpass ""
       --scriptpath "/w"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\nrequire_once __DIR__ . '/extensions/AWS/tests/travis/AWSSettings.php';\n" >> ./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
-  - echo 'var_dump( $wgFileBackends, $wgLocalFileRepo, $wgAWSRegion );' | php maintenance/eval.php
-  - cd extensions/AWS && patch -p1 <../../../patches/aws-investigate-error.patch && cd -
+  - php maintenance/update.php --quick
+  - sed -i 's/if ( !self::$dbSetup || $this->needsDB() )/if ( 0 )/' tests/phpunit/MediaWikiTestCase.php
+  - grep needsDB tests/phpunit/MediaWikiTestCase.php
 
 script:
-  - php tests/phpunit/phpunit.php extensions/AWS/tests/phpunit/
+  - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/
+
