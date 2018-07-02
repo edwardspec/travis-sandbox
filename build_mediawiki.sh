@@ -5,8 +5,7 @@
 ###############################################################################
 
 branch=$1
-
-GITCLONE_OPTS="--depth 1 --recursive -b $branch"
+GITCLONE_OPTS="--depth 1 --recurse-submodules -j 5 -b $branch"
 
 mkdir -p buildcache/mediawiki
 
@@ -16,8 +15,7 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 		rm -rf mediawiki
 		git clone $GITCLONE_OPTS https://gerrit.wikimedia.org/r/p/mediawiki/core.git mediawiki
 
-		for EXT in AbuseFilter CheckUser MobileFrontend VisualEditor
-		do
+		for EXT in AbuseFilter CheckUser MobileFrontend PageForms VisualEditor; do
 			git clone $GITCLONE_OPTS \
 				https://gerrit.wikimedia.org/r/p/mediawiki/extensions/$EXT.git \
 				mediawiki/extensions/$EXT
