@@ -30,7 +30,6 @@ matrix:
 cache:
   directories:
     - buildcache
-    - mediawiki/extensions/Moderation/tests/selenium/node_modules
 
 before_script:
   - phpenv config-rm xdebug.ini
