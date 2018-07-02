@@ -17,6 +17,12 @@ env:
     - DBTYPE=mysql
     - DBUSER=root
     - MODERATION_BRANCH=selenium
+    - MEDIAWIKI_USER="Moderator User"
+    - MEDIAWIKI_PASSWORD="123456"
+
+addons:
+  hosts:
+    - moderation.example.com
 
 matrix:
   include:
@@ -50,14 +56,15 @@ before_script:
       --scriptpath "/mediawiki"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\n\$wgServer = 'http://127.0.0.1:8080';\n" >> ./LocalSettings.php
+  - echo -en "\n\nrequire_once __DIR__ . '/../ServerSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
+  - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
   - php -S 127.0.0.1:8080 -t .. ../router.php &
-  - sleep 2
+#  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.phantom.js --baseUrl 'http://127.0.0.1:8080/mediawiki/'
+  - ./node_modules/.bin/wdio wdio.conf.phantom.js --baseUrl 'http://moderation.example.com:8080/mediawiki/'
 #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
