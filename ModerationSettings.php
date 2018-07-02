@@ -14,8 +14,11 @@ wfLoadExtensions( [
 
 # The following extensions are tested by Selenium testsuite,
 # they are not needed for PHPUnit testsuite to run.
-# wfLoadExtension( 'MobileFrontend' );
-# wfLoadExtension( 'VisualEditor' );
+wfLoadExtension( 'MobileFrontend' );
+wfLoadExtension( 'VisualEditor' );
+
+# Mobile skin.
+$wgMFDefaultSkinClass = 'SkinTimeless';
 
 # Tested extension
 wfLoadExtension( "Moderation" );
