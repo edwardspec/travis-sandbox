@@ -49,9 +49,10 @@ before_script:
       --scriptpath "/w"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
+  - echo -en "\n\n$wgServer = 'http://127.0.0.1:8080';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
-  - php -S 0.0.0.0:80 ../router.php &
+  - php -S 127.0.0.1:8080 ../router.php &
   - sleep 1
 
 script:
