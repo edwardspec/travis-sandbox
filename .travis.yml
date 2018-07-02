@@ -46,14 +46,14 @@ before_script:
       --dbname traviswiki
       --dbuser "$DBUSER"
       --dbpass ""
-      --scriptpath "/w"
+      --scriptpath "/mediawiki"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\n\$wgServer = 'http://127.0.0.1:8080';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
-  - php -S 127.0.0.1:8080 ../router.php &
-  - sleep 1
+  - php -S 127.0.0.1:8080 -t .. ../router.php &
+  - sleep 2
 
 script:
   - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
