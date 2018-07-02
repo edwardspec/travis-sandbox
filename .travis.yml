@@ -55,7 +55,7 @@ before_script:
   - php maintenance/update.php --quick
   - php -S 127.0.0.1:8080 -t .. ../router.php &
   - sleep 2
-  - cd extension/Moderation/tests/selenium
+  - cd extensions/Moderation/tests/selenium
   - npm install
 
 script:
