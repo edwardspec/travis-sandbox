@@ -23,8 +23,8 @@ if [ ! -f buildcache/mediawiki/COMPLETE ]; then
 
 		for SKIN in MinervaNeue; do
 			git clone $GITCLONE_OPTS \
-				https://gerrit.wikimedia.org/r/p/mediawiki/skins/$EXT.git \
-				mediawiki/skins/$EXT
+				https://gerrit.wikimedia.org/r/p/mediawiki/skins/$SKIN.git \
+				mediawiki/skins/$SKIN
 		done
 
 		cd mediawiki
