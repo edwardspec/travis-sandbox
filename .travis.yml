@@ -16,6 +16,7 @@ env:
   global:
     - DBTYPE=mysql
     - DBUSER=root
+    - MODERATION_BRANCH=selenium
 
 matrix:
   include:
@@ -35,9 +36,9 @@ before_script:
   - phpenv config-add phpconf/php.ini
   - php -i
   - bash -ex ./build_mediawiki.sh "$branch"
-  - wget https://github.com/edwardspec/mediawiki-moderation/archive/master.zip
-  - unzip master.zip
-  - mv mediawiki-moderation-master mediawiki/extensions/Moderation
+  - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
+  - unzip $MODERATION_BRANCH.zip
+  - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
@@ -54,6 +55,9 @@ before_script:
   - php maintenance/update.php --quick
   - php -S 127.0.0.1:8080 -t .. ../router.php &
   - sleep 2
+  - cd extension/Moderation/tests/selenium
+  - npm install
 
 script:
-  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
+  - ./node_modules/.bin/wdio wdio.conf.phantom.js --baseUrl 'http://127.0.0.1/mediawiki/'
+#  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
