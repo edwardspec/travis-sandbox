@@ -17,8 +17,8 @@ wfLoadExtensions( [
 wfLoadExtension( 'MobileFrontend' );
 wfLoadExtension( 'VisualEditor' );
 
-# Mobile skin.
-$wgMFDefaultSkinClass = 'SkinTimeless';
+# Default skin for Extension:MobileFrontend
+wfLoadSkin( 'MinervaNeue' );
 
 # Tested extension
 wfLoadExtension( "Moderation" );
