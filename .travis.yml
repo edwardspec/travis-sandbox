@@ -51,7 +51,8 @@ before_script:
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
-  - php -S 127.0.0.1:80 ../router.php &
+  - php -S 0.0.0.0:80 ../router.php &
+  - sleep 1
 
 script:
   - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
