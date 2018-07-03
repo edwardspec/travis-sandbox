@@ -45,6 +45,12 @@ before_script:
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.21.0-linux64.tar.gz -C geckodriver
+  - export PATH="$PATH:$PWD/geckodriver"
+  - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar -O selenium.jar
+  - java -jar selenium.jar &
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
@@ -65,8 +71,6 @@ before_script:
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
   - php -S 127.0.0.1:8080 -t .. ../router.php &
-  - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar -O selenium.jar
-  - java -jar selenium.jar &
 #  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
