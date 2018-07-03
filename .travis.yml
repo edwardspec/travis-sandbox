@@ -47,8 +47,20 @@ before_script:
   - php -i
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+
+#  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+#  - mkdir geckodriver
+#  - tar -xzf geckodriver-v0.21.0-linux64.tar.gz -C geckodriver
+#  - export PATH="$PATH:$PWD/geckodriver"
+
+  - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
+  - mkdir chromedriver
+  - unzip -d chromedriver chromedriver_linux64.zip
+  - export PATH="$PATH:$PWD/chromedriver"
+
   - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar -O selenium.jar
   - java -jar selenium.jar >selenium.log &
+
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
