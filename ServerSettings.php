@@ -2,4 +2,4 @@
 
 $wgServer = "http://moderation.example.com";
 $wgScriptPath = "/mediawiki";
-#$wgArticlePath = "/wiki/$1";
+$wgArticlePath = "/wiki/$1";
