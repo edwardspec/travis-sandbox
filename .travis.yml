@@ -67,7 +67,7 @@ before_script:
 #  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
-  - sed -i -e 's/maxInstances: [0-9]\+/maxInstances: 1/g' wdio.conf.sauce.js
+  - sed -E "s/(maxInstances[^0-9]+)[0-9]+/\1 1/g" wdio.conf.sauce.js
 
 script:
   - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
