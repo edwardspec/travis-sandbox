@@ -22,7 +22,7 @@ env:
     - MOZ_HEADLESS=1
 
 addons:
-  chrome: stable
+  chrome: latest
 
 addons:
   hosts:
