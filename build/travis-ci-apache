@@ -1,5 +1,7 @@
+RewriteEngine On
+
 <VirtualHost *:80>
-  # [...]
+  ServerName moderation.example.com
 
   DocumentRoot %TRAVIS_BUILD_DIR%
 
@@ -21,5 +23,4 @@
 
   RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/mediawiki/index.php [L]
 
-  # [...]
 </VirtualHost>
