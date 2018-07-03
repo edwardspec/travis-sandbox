@@ -20,7 +20,7 @@ wfLoadExtension( 'VisualEditor' );
 # Parsoid configuration (used by Extrension:VisualEditor)
 $wgVirtualRestConfig['modules']['parsoid'] = [
 	'url' => 'http://moderation.example.com:8142',
-	'domain' => 'moderation.example.com:8080'
+	'domain' => 'moderation.example.com'
 ];
 
 # Default skin for Extension:MobileFrontend

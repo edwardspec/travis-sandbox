@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: php
 
 git:
@@ -66,14 +66,14 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - php -S 127.0.0.1:8080 -t .. ../router.php &
+  - sudo php -S 127.0.0.1:80 -t .. ../router.php &
 #  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/visualeditor.js
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/w/' --spec specs/visualeditor.js
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log

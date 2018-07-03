@@ -10,4 +10,4 @@ services:
     entrypoint: apiServiceWorker
     conf:
       mwApis:
-        - uri: 'http://moderation.example.com:8080/w/api.php'
+        - uri: 'http://moderation.example.com/w/api.php'
