@@ -38,11 +38,15 @@ matrix:
 cache:
   directories:
     - buildcache
+    - parsoid
 
 before_script:
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
+  - if [ ! -d parsoid ]; then git clone --recurse-submodules -j2 https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy parsoid; fi
+  - cp config.yaml parsoid/
+  - cd parsoid && ( PORT=8142 nohup npm start & ) && cd -
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
@@ -69,5 +73,4 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/'
-  #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/visualeditor.js
