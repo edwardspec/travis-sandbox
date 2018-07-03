@@ -19,14 +19,13 @@ env:
     - MODERATION_BRANCH=selenium
     - MEDIAWIKI_USER="Moderator User"
     - MEDIAWIKI_PASSWORD="123456"
-    - MOZ_HEADLESS=1
-
-addons:
-  chrome: latest
+    - secure: "aSJvSe7MCAuBQFc+FpNmp8PRVufWR65qsJG84X3HzrgwL4dfUPJmEF5Bhwq2O6qcMsOfE4HZZ60fuqDTLZUuAbl2kb03FGQswVyHSgps/khmEWqKDDVmGqNPnly//h57ryLcoZ8g56LNJwHYvWOJDdZCUwxQ4eYatXbGILX6vSRIMgqyMbciakQb4DQZ6wLLP5qa0ZlYrS1IJCrgiLzUbEZkYuhDuNzWhMlMpi/YArs31gjHOHLnrz2sgTlm+N8qgqNjoyiLKZiwEe5bNYuYVH5bYWNXYMdZt8IzQ77S3oXUnPZ8fPf4YEPEt4GKrU+hrCXTXxlnJjDrYUKjeaZAFMRyKyiv5CdoMAZOixzpgvWmaBKH2aOOSYI3O6jcOE/JBRPg+gga9dMhoLUTUQ1UWxcBqez0eu4t/0NuZeHL3IaFBeQmI7MV+++4SsMtKnCsmcQCkYjTWV5xBL3KRRu6W8elbA4Mq2eFI3IE1tQDErAE2cHxxfKwFH8yJoNtDvN3jfLM5IpzbHjtIyrnKxHuhUdldn7iN3l2xAGSmvFAYza8F902ElLZGJyBxfUPmrpFNB/RTPg8bnKoqdtpCI+FSTFDI8gROUjaNTnUNYgzKMAeBqfJzJ4ogc7kbq8tmTgtlCrytcZF0CsXud+iv8W8cdPQONQbQYdLCu2BnklqEEc="
+    - secure: "cuKPGBq98iaEPnlVAs/zTU9o2PrlWkc8RmQ2b65L42wrlL96QynFq0Z35PtyoZJ1zyNiE/Eq3ua6QZ8356qQCLR738s5mdGeQvFy8z81J3TQxjM8CTOsJAUu4m+2YHHEKg1xE6bJsUBmOwny8ezyj8MiHOsQ6qJdIU86rSAbek8Ta/lkge7JAxWIi0c+p4iDEyCUd9MdGtEc9aG68T/GLqEcaCHCNvR/wHmaF3iadBym3auHDl0SMPAjh8eJnxS4r8Q8PLa0tnarh0+iZ3SyLgA1Z4W3SMoTAOGgGpO94av9vfu8tZFW5kNFJHTWmq4p0RGe/UB2xC6mS9zUkfKYW3WDIQhnHTF/pabL5gzX4JCxSi9YYFAhD4z3O+FhM1OJQ/0UKiP0PVuu7t8YmyhiH0UYr0xJrVvjjKkV5sHjDbuaPovC8SmEAKMvCm9QlBJ+Wre2ey4zBB//qbjpuH61FUegcU+xzNEU/b5GWBZBAXyTdTZ6t9dGMyAPHSVjCI1xBWszb9TZX7RNbFKOQmCxxhEkwhMEYB/hbEJ2EnHswV1GVEARrV7gol8ud5y3XmblKJln1u46zpyND1RT4QkWOTXiNLQWRVNts0nAr6rRtVPdlim4joM8dp0F1ao6pJddR6HXsBUXo9ZnGvNHn3B+XG4OX0os+TaQBZ0LOgwGU88="
 
 addons:
   hosts:
     - moderation.example.com
+  sauce_connect: true
 
 matrix:
   include:
@@ -45,22 +44,6 @@ before_script:
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-
-#  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
-#  - mkdir geckodriver
-#  - tar -xzf geckodriver-v0.21.0-linux64.tar.gz -C geckodriver
-#  - export PATH="$PATH:$PWD/geckodriver"
-
-  - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
-  - mkdir chromedriver
-  - unzip -d chromedriver chromedriver_linux64.zip
-  - export PATH="$PATH:$PWD/chromedriver"
-
-  - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar -O selenium.jar
-  - java -jar selenium.jar >selenium.log &
-
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
@@ -84,10 +67,8 @@ before_script:
 #  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
+  - sed -i -e 's/maxInstances: [0-9]\+/maxInstances: 1/g' wdio.conf.sauce.js
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
   #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
-
-after_script:
-  - cat "$TRAVIS_BUILD_DIR/selenium.log"
