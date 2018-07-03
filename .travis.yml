@@ -19,6 +19,10 @@ env:
     - MODERATION_BRANCH=selenium
     - MEDIAWIKI_USER="Moderator User"
     - MEDIAWIKI_PASSWORD="123456"
+    - MOZ_HEADLESS=1
+
+addons:
+  firefox: latest
 
 addons:
   hosts:
@@ -66,6 +70,6 @@ before_script:
   - npm install
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.phantom.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
+  - ./node_modules/.bin/wdio wdio.conf.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
 
 #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
