@@ -25,7 +25,6 @@ env:
 addons:
   hosts:
     - moderation.example.com
-  sauce_connect: true
 
 matrix:
   include:
