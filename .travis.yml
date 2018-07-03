@@ -41,6 +41,7 @@ cache:
     - parsoid
 
 before_script:
+  - export ROOTDIR=$(pwd)
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
@@ -76,5 +77,6 @@ script:
   - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/visualeditor.js
 
 after_script:
-  - cd $TRAVIS_BUILD_DIR
-  - cat parsoid/nohup.out
+  - echo $ROOTDIR
+  - echo $TRAVIS_BUILD_DIR
+  - cat $ROOTDIR/parsoid/nohup.out
