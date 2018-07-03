@@ -66,8 +66,7 @@ before_script:
 #  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
-  - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/mobilefrontend.js
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/'
   #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php

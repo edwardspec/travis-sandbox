@@ -5,10 +5,32 @@ var merge = require( 'deepmerge' ),
 
 // Overwrite default settings
 exports.config = merge( wdioConf.config, {
+
 	maxInstances: 1,
 
 	capabilities: [
-		{ browserName: 'chrome', version: 'latest' }
+		{
+			platform: 'Windows 10',
+			browserName: 'MicrosoftEdge',
+			version: '14.14393'
+		},
+		{
+			platform: 'Windows 8.1',
+			browserName: 'internet explorer',
+			version: '11.0'
+		},
+		{
+			platform: 'macOS 10.13',
+			browserName: 'safari',
+			version: '11.1',
+			exclude: [
+				// SafariDriver doesn't support sendKeys() to contenteditable,
+				// so we can't test VisualEditor in it
+				'specs/visualeditor.js'
+			]
+		},
+		{ browserName: 'chrome', version: 'latest' },
+		{ browserName: 'firefox', version: 'latest' }
 	],
 
 	services: [ 'sauce' ],
@@ -20,4 +42,5 @@ exports.config = merge( wdioConf.config, {
 	mochaOpts: {
 		timeout: 180000
 	}
+
 } );
