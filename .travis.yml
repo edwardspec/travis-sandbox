@@ -68,7 +68,8 @@ before_script:
   - cd extensions/Moderation/tests/selenium
   - npm install
   - sed -E "s/(maxInstances[^0-9]+)[0-9]+/\1 1/g" wdio.conf.sauce.js
+  - sed '/sauceConnect/d' wdio.conf.sauce.js
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/mobilefrontend.js
   #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
