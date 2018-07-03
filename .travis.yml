@@ -22,7 +22,7 @@ env:
     - MOZ_HEADLESS=1
 
 addons:
-  firefox: latest
+  chrome: stable
 
 addons:
   hosts:
@@ -47,12 +47,8 @@ before_script:
   - php -i
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
-  - mkdir geckodriver
-  - tar -xzf geckodriver-v0.21.0-linux64.tar.gz -C geckodriver
-  - export PATH="$PATH:$PWD/geckodriver"
   - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar -O selenium.jar
-  - java -jar selenium.jar &
+  - java -jar selenium.jar >selenium.log &
   - bash -ex ./build_mediawiki.sh "$branch"
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
@@ -79,5 +75,7 @@ before_script:
 
 script:
   - ./node_modules/.bin/wdio wdio.conf.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
+  #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
 
-#  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
+after_script:
+  - cat "$TRAVIS_BUILD_DIR/selenium.log"
