@@ -76,6 +76,6 @@ before_script:
   - npm install
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
+  - xvfb-run ./node_modules/.bin/wdio wdio.conf.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/notify.js
 
 #  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
