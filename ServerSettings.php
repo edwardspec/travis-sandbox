@@ -1,5 +1,5 @@
 <?php
 
-$wgServer = "http://moderation.example.com:8080";
-$wgScriptPath = "/w";
-$wgArticlePath = "/wiki/$1";
+$wgServer = "http://moderation.example.com";
+$wgScriptPath = "/mediawiki";
+#$wgArticlePath = "/wiki/$1";

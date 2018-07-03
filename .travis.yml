@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: php
 
 git:
@@ -41,6 +41,22 @@ cache:
     - parsoid
 
 before_script:
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  # enable php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
+  - sudo chown -R travis:travis /var/lib/apache2/fastcgi
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  # configure apache virtual hosts
+  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/000-default.conf
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+  - sudo service apache2 restart
+
+
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
@@ -66,14 +82,12 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - php -S 127.0.0.1:8080 -t .. ../router.php &
-#  - sleep 2
   - cd extensions/Moderation/tests/selenium
   - npm install
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com:8080/w/' --spec specs/visualeditor.js
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/visualeditor.js
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
