@@ -82,9 +82,9 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - cd extensions/Moderation/tests/selenium
-  - npm install
-  - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
+#  - cd extensions/Moderation/tests/selenium
+#  - npm install
+#  - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
 #  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/visualeditor.js
