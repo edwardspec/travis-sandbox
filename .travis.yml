@@ -76,7 +76,6 @@ before_script:
       --dbuser "$DBUSER"
       --dbpass ""
       --scriptpath "/mediawiki"
-  - echo 'var_dump($wgVisualEditorUseSingleEditTab);' | php maintenance/eval.php
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ServerSettings.php';\n" >> ./LocalSettings.php
