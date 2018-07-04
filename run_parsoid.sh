@@ -16,20 +16,14 @@ fi
 
 if [ ! -f parsoid/COMPLETE ]; then
 	rm -rf parsoid
-	git clone $GITCLONE_OPTS https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid
+	git clone $GITCLONE_OPTS https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy parsoid
 
-	(
-		cd parsoid
-
-		if [ "$branch" = "REL1_27" ]; then
-			# Legacy MediaWiki 1.27 doesn't support latest Parsoid.
-			# Revert Parsoid to the supported version.
-			git checkout v0.8.1
-		fi
-
-		npm install
-		ln -s . src # "npm start" tries to run src/lib/index.js, which is actually lib/index.js
-	)
+	if [ "$branch" = "REL1_27" ]; then
+		# Legacy MediaWiki 1.27 doesn't support latest Parsoid.
+		# Revert Parsoid to the supported version.
+		PARSOID_DEPLOY_REVISION=205ae95d46d2452c2c7c2302e77a59e6ddef3afb
+		( cd parsoid && git checkout --recurse-submodules $PARSOID_DEPLOY_REVISION )
+	fi
 
 	touch parsoid/COMPLETE
 fi
