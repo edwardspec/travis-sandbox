@@ -22,7 +22,7 @@ if [ ! -f parsoid/COMPLETE ]; then
 		# Legacy MediaWiki 1.27 doesn't support latest Parsoid.
 		# Revert Parsoid to the supported version.
 		PARSOID_DEPLOY_REVISION=205ae95d46d2452c2c7c2302e77a59e6ddef3afb
-		( cd parsoid && git checkout $PARSOID_DEPLOY_REVISION )
+		( cd parsoid && git checkout --recurse-submodules $PARSOID_DEPLOY_REVISION )
 	fi
 
 	touch parsoid/COMPLETE

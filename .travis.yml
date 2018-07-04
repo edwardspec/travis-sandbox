@@ -82,7 +82,7 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/visualeditor.js
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
