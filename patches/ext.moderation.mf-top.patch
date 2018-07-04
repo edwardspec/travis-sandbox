@@ -1,0 +1,13 @@
+diff --git a/extensions/Moderation/extension.json b/extensions/Moderation/extension.json
+index a8bbef0..0d4753a 100644
+--- a/extensions/Moderation/extension.json
++++ b/extensions/Moderation/extension.json
+@@ -150,7 +150,7 @@
+ 			"styles": "ext.moderation.edit.css"
+ 		},
+ 		"ext.moderation.mf": {
+-			"position": "bottom",
++			"position": "top",
+ 			"scripts": [
+ 				"mobilefrontend/notify.mf.js",
+ 				"mobilefrontend/preload.mf.js"
