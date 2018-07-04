@@ -6,7 +6,7 @@
 ###############################################################################
 
 branch=$1
-GITCLONE_OPTS="--recurse-submodules -j 5 -b $branch"
+GITCLONE_OPTS="--recurse-submodules -j 5"
 
 if [ "$branch" != "REL1_27" ]; then
 	# See below, REL1_27 can't use --depth 1,
