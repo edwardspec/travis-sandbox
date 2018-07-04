@@ -1,11 +1,11 @@
-diff --git a/includes/VisualEditorHooks.php b/includes/VisualEditorHooks.php
+diff --git a/extensions/VisualEditor/includes/VisualEditorHooks.php b/extensions/VisualEditor/includes/VisualEditorHooks.php
 index 1c81b1e..d9a4e39 100644
---- a/includes/VisualEditorHooks.php
-+++ b/includes/VisualEditorHooks.php
+--- a/extensions/VisualEditor/includes/VisualEditorHooks.php
++++ b/extensions/VisualEditor/includes/VisualEditorHooks.php
 @@ -405,6 +405,16 @@ class VisualEditorHooks {
  		// change "Edit" to "Edit source".
  		$isAvailable = $namespaceEnabled && $contentModelEnabled;
- 
+
 +		var_dump( [ 'DEBUG' => [
 +			'title' => $title->getFullText(),
 +			'namespaceEnabled' => $namespaceEnabled ? 'yes' : 'no',
