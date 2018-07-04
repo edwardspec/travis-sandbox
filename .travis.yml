@@ -82,15 +82,12 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - echo 'var_dump($wgVisualEditorUseSingleEditTab);' | php maintenance/eval.php
   - cd extensions/Moderation/tests/selenium
   - npm install
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/visualeditor.js
-#  - MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationApproveTest.php
-
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log

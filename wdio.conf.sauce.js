@@ -19,7 +19,6 @@ conf = merge( conf, {
 } );
 
 conf.capabilities = [
-	/*
 	{
 		platform: 'Windows 10',
 		browserName: 'MicrosoftEdge',
@@ -40,8 +39,7 @@ conf.capabilities = [
 			'specs/visualeditor.js'
 		]
 	},
-	*/
-	//{ browserName: 'chrome', version: 'latest' },
+	{ browserName: 'chrome', version: 'latest' },
 	{ browserName: 'firefox', version: 'latest' }
 ];
 
