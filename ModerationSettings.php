@@ -1,31 +1,40 @@
 <?php
 
-$wgEnableUploads = true; # For upload-related tests
-wfLoadSkin( 'Vector' ); # Skin prints the notice which is tested by ModerationNotifyModeratorTest
+# URL of the testwiki (as configured in .travis.yml).
+$wgServer = "http://moderation.example.com";
+$wgScriptPath = "/mediawiki";
+$wgArticlePath = "/wiki/$1";
 
+# For upload-related tests
+$wgEnableUploads = true;
+
+# Skin prints the notice which is tested by ModerationNotifyModeratorTest
+wfLoadSkin( 'Vector' );
+
+# Object cache is needed for ModerationNotifyModeratorTest
 $wgMainCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = [ "127.0.0.1:11211" ];
 
 # These extensions are needed for some tests of Extension:Moderation
 wfLoadExtensions( [
+	# For PHPUnit testsuite
 	'AbuseFilter',
-	'CheckUser'
+	'CheckUser',
+
+	# For Selenium testsuite
+	'MobileFrontend',
+	'VisualEditor'
 ] );
 
-# The following extensions are tested by Selenium testsuite,
-# they are not needed for PHPUnit testsuite to run.
-wfLoadExtension( 'MobileFrontend' );
-wfLoadExtension( 'VisualEditor' );
+# Default skin for Extension:MobileFrontend
+wfLoadSkin( 'MinervaNeue' );
 
 # Parsoid configuration (used by Extrension:VisualEditor)
 $wgVirtualRestConfig['modules']['parsoid'] = [
 	'url' => 'http://moderation.example.com:8142',
 	'domain' => 'moderation.example.com'
 ];
-$wgDefaultUserOptions['visualeditor-enable'] = 1;
-
-# Default skin for Extension:MobileFrontend
-wfLoadSkin( 'MinervaNeue' );
+$wgDefaultUserOptions['visualeditor-enable'] = 1; # Enable VisualEditor for all users
 
 # Tested extension
 wfLoadExtension( "Moderation" );

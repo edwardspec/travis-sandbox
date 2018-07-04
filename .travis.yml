@@ -19,7 +19,7 @@ env:
     - MODERATION_BRANCH=selenium
     - MEDIAWIKI_USER="Moderator User"
     - MEDIAWIKI_PASSWORD="123456"
-    - secure: "aSJvSe7MCAuBQFc+FpNmp8PRVufWR65qsJG84X3HzrgwL4dfUPJmEF5Bhwq2O6qcMsOfE4HZZ60fuqDTLZUuAbl2kb03FGQswVyHSgps/khmEWqKDDVmGqNPnly//h57ryLcoZ8g56LNJwHYvWOJDdZCUwxQ4eYatXbGILX6vSRIMgqyMbciakQb4DQZ6wLLP5qa0ZlYrS1IJCrgiLzUbEZkYuhDuNzWhMlMpi/YArs31gjHOHLnrz2sgTlm+N8qgqNjoyiLKZiwEe5bNYuYVH5bYWNXYMdZt8IzQ77S3oXUnPZ8fPf4YEPEt4GKrU+hrCXTXxlnJjDrYUKjeaZAFMRyKyiv5CdoMAZOixzpgvWmaBKH2aOOSYI3O6jcOE/JBRPg+gga9dMhoLUTUQ1UWxcBqez0eu4t/0NuZeHL3IaFBeQmI7MV+++4SsMtKnCsmcQCkYjTWV5xBL3KRRu6W8elbA4Mq2eFI3IE1tQDErAE2cHxxfKwFH8yJoNtDvN3jfLM5IpzbHjtIyrnKxHuhUdldn7iN3l2xAGSmvFAYza8F902ElLZGJyBxfUPmrpFNB/RTPg8bnKoqdtpCI+FSTFDI8gROUjaNTnUNYgzKMAeBqfJzJ4ogc7kbq8tmTgtlCrytcZF0CsXud+iv8W8cdPQONQbQYdLCu2BnklqEEc="
+    - SAUCE_USERNAME=edwardspec
     - secure: "cuKPGBq98iaEPnlVAs/zTU9o2PrlWkc8RmQ2b65L42wrlL96QynFq0Z35PtyoZJ1zyNiE/Eq3ua6QZ8356qQCLR738s5mdGeQvFy8z81J3TQxjM8CTOsJAUu4m+2YHHEKg1xE6bJsUBmOwny8ezyj8MiHOsQ6qJdIU86rSAbek8Ta/lkge7JAxWIi0c+p4iDEyCUd9MdGtEc9aG68T/GLqEcaCHCNvR/wHmaF3iadBym3auHDl0SMPAjh8eJnxS4r8Q8PLa0tnarh0+iZ3SyLgA1Z4W3SMoTAOGgGpO94av9vfu8tZFW5kNFJHTWmq4p0RGe/UB2xC6mS9zUkfKYW3WDIQhnHTF/pabL5gzX4JCxSi9YYFAhD4z3O+FhM1OJQ/0UKiP0PVuu7t8YmyhiH0UYr0xJrVvjjKkV5sHjDbuaPovC8SmEAKMvCm9QlBJ+Wre2ey4zBB//qbjpuH61FUegcU+xzNEU/b5GWBZBAXyTdTZ6t9dGMyAPHSVjCI1xBWszb9TZX7RNbFKOQmCxxhEkwhMEYB/hbEJ2EnHswV1GVEARrV7gol8ud5y3XmblKJln1u46zpyND1RT4QkWOTXiNLQWRVNts0nAr6rRtVPdlim4joM8dp0F1ao6pJddR6HXsBUXo9ZnGvNHn3B+XG4OX0os+TaQBZ0LOgwGU88="
 
 addons:
@@ -28,12 +28,10 @@ addons:
 
 matrix:
   include:
-    - env: branch=REL1_31
-      php: 7.2
-#    - env: branch=REL1_27
-#      php: 7.1
-#    - env: branch=REL1_27
-#      php: 5.6
+#    - env: branch=REL1_31
+#      php: 7.2
+    - env: branch=REL1_27
+      php: 7.1
 
 cache:
   directories:
@@ -56,7 +54,6 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
   - sudo service apache2 restart
 
-
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
@@ -78,7 +75,6 @@ before_script:
       --scriptpath "/mediawiki"
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
-  - echo -en "\n\nrequire_once __DIR__ . '/../ServerSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
