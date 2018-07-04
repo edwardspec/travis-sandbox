@@ -24,6 +24,7 @@ conf.capabilities = [
 		browserName: 'MicrosoftEdge',
 		version: '14.14393'
 	},
+	/*
 	{
 		platform: 'Windows 8.1',
 		browserName: 'internet explorer',
@@ -41,6 +42,7 @@ conf.capabilities = [
 	},
 	{ browserName: 'chrome', version: 'latest' },
 	{ browserName: 'firefox', version: 'latest' }
+	*/
 ];
 
 exports.config = conf;
