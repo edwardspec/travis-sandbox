@@ -28,10 +28,8 @@ wfLoadExtensions( [
 
 # Default skin for Extension:MobileFrontend
 if ( version_compare( $wgVersion, '1.30', '>=' ) ) {
-	wfLoadSkin( 'MinervaNeue' ); # Modern name of the skin
-}
-else {
-	wfLoadSkin( 'Minerva' ); # Old name of the skin (MediaWiki 1.27-1.29)
+	# MediaWiki 1.27-1.29 have this skin included into MobileFrontend
+	wfLoadSkin( 'MinervaNeue' );
 }
 
 # Parsoid configuration (used by Extrension:VisualEditor)
