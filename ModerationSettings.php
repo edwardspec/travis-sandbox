@@ -23,6 +23,8 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
 	'domain' => 'moderation.example.com'
 ];
 
+$VisualEditorUseSingleEditTab = false;
+
 # Default skin for Extension:MobileFrontend
 wfLoadSkin( 'MinervaNeue' );
 

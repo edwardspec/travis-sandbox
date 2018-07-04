@@ -41,8 +41,8 @@ conf.capabilities = [
 		]
 	},
 	*/
-	{ browserName: 'chrome', version: 'latest' },
-	//{ browserName: 'firefox', version: 'latest' }
+	//{ browserName: 'chrome', version: 'latest' },
+	{ browserName: 'firefox', version: 'latest' }
 ];
 
 exports.config = conf;

@@ -76,12 +76,14 @@ before_script:
       --dbuser "$DBUSER"
       --dbpass ""
       --scriptpath "/mediawiki"
+  - echo 'var_dump($wgVisualEditorUseSingleEditTab);' | php maintenance/eval.php
   - echo -en "\n\nrequire_once __DIR__ . '/includes/DevelopmentSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ModerationSettings.php';\n" >> ./LocalSettings.php
   - echo -en "\n\nrequire_once __DIR__ . '/../ServerSettings.php';\n" >> ./LocalSettings.php
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
+  - echo 'var_dump($wgVisualEditorUseSingleEditTab);' | php maintenance/eval.php
   - cd extensions/Moderation/tests/selenium
   - npm install
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
