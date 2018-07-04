@@ -22,7 +22,7 @@ $wgVirtualRestConfig['modules']['parsoid'] = [
 	'url' => 'http://moderation.example.com:8142',
 	'domain' => 'moderation.example.com'
 ];
-$wgVisualEditorUseSingleEditTab = false;
+$wgDefaultUserOptions['visualeditor-enable'] = 1;
 
 # Default skin for Extension:MobileFrontend
 wfLoadSkin( 'MinervaNeue' );
