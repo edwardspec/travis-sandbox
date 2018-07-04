@@ -5,7 +5,7 @@ var merge = require( 'deepmerge' ),
 
 // Overwrite default settings
 conf = merge( conf, {
-	maxInstances: 5,
+	maxInstances: 1,
 
 	services: [ 'sauce' ],
 	user: process.env.SAUCE_USERNAME || '',
@@ -19,19 +19,16 @@ conf = merge( conf, {
 } );
 
 conf.capabilities = [
-	/*
 	{
 		platform: 'Windows 10',
 		browserName: 'MicrosoftEdge',
 		version: '14.14393'
 	},
-	*/
 	{
 		platform: 'Windows 8.1',
 		browserName: 'internet explorer',
 		version: '11.0'
 	},
-	/*
 	{
 		platform: 'macOS 10.13',
 		browserName: 'safari',
@@ -44,7 +41,6 @@ conf.capabilities = [
 	},
 	{ browserName: 'chrome', version: 'latest' },
 	{ browserName: 'firefox', version: 'latest' }
-	*/
 ];
 
 exports.config = conf;
