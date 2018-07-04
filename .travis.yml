@@ -39,6 +39,10 @@ cache:
     - parsoid
 
 before_script:
+  - phpenv config-rm xdebug.ini
+  - phpenv config-add phpconf/php.ini
+  - php -i
+
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # enable php-fpm
@@ -53,10 +57,6 @@ before_script:
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/000-default.conf
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
   - sudo service apache2 restart
-
-  - phpenv config-rm xdebug.ini
-  - phpenv config-add phpconf/php.ini
-  - php -i
 
   - bash -ex ./run_parsoid.sh "$branch"
   - bash -ex ./build_mediawiki.sh "$branch"
