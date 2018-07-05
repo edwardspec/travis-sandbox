@@ -30,8 +30,8 @@ matrix:
   include:
     - env: branch=REL1_31
       php: 7.2
-#    - env: branch=REL1_27
-#      php: 7.1
+    - env: branch=REL1_27
+      php: 7.1
 
 cache:
   directories:
@@ -69,7 +69,7 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/notify.js
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
