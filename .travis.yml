@@ -51,6 +51,7 @@ before_script:
   - unzip $MODERATION_BRANCH.zip
   - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
   - cd mediawiki
+  - patch -p1 <../patches/ext.moderation.ajaxhook-top.patch
   - >
       php maintenance/install.php traviswiki admin
       --pass travis
@@ -69,7 +70,7 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/mobilefrontend.js
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
