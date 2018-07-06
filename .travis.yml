@@ -30,8 +30,8 @@ matrix:
   include:
     - env: branch=REL1_31
       php: 7.2
-    - env: branch=REL1_27
-      php: 7.1
+#    - env: branch=REL1_27
+#      php: 7.1
 
 cache:
   directories:
@@ -51,7 +51,7 @@ before_script:
   - unzip $MODERATION_BRANCH.zip
   - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
   - cd mediawiki
-  - patch -p1 <../patches/ext.moderation.ajaxhook-top.patch
+  - patch -p1 <../patches/selenium-moderation-debug.patch
   - >
       php maintenance/install.php traviswiki admin
       --pass travis

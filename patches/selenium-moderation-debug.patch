@@ -1,0 +1,38 @@
+diff --git a/extensions/Moderation/modules/ext.moderation.ajaxhook.js b/extensions/Moderation/modules/ext.moderation.ajaxhook.js
+index e16d7d3..bbd734a 100644
+--- a/extensions/Moderation/modules/ext.moderation.ajaxhook.js
++++ b/extensions/Moderation/modules/ext.moderation.ajaxhook.js
+@@ -88,6 +88,7 @@
+ 		@returns New API response (if overwrite is needed) or false (if no need to overwrite).
+ 	*/
+ 	function rewriteAjaxResponse( query, ret ) {
++		console.log( "in rewriteAjaxResponse(): ", query, ret );
+
+ 		/* Check whether we need to overwrite this AJAX response or not */
+ 		if ( !ret.error ) {
+diff --git a/extensions/Moderation/tests/selenium/specs/mobilefrontend.js b/extensions/Moderation/tests/selenium/specs/mobilefrontend.js
+index 79091f7..369651a 100644
+--- a/extensions/Moderation/tests/selenium/specs/mobilefrontend.js
++++ b/extensions/Moderation/tests/selenium/specs/mobilefrontend.js
+@@ -20,6 +20,8 @@ var PageName = 'Test ' + browser.getTestString(),
+
+ describe( 'MobileFrontend', function () {
+
++	this.timeout( 1000000 );
++
+ 	it( 'should save the new edit without errors', function () {
+ 		MobileFrontend.edit( PageName, 0, Content, Summary );
+
+@@ -59,6 +61,12 @@ describe( 'MobileFrontend', function () {
+ 		MobileFrontend.edit( PageName, 0, Sections.join( "\n\n" ) );
+
+ 		PostEdit.init(); /* Wait for the page to be loaded before we go with MobileFrontend.open() */
++
++		if ( MobileFrontend.error ) {
++			console.log( "MobileFrontend.edit() failed!" );
++			browser.debug();
++		}
++
+ 		BlankPage.open(); /* Make sure old MobileFrontend form isn't still in the DOM */
+
+ 		/* Test preloading of a single section into MobileFrontend */
