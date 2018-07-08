@@ -51,7 +51,6 @@ before_script:
   - unzip $MODERATION_BRANCH.zip
   - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
   - cd mediawiki
-  - patch -p1 <../patches/selenium-moderation-debug.patch
   - >
       php maintenance/install.php traviswiki admin
       --pass travis
