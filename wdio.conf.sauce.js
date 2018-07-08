@@ -5,7 +5,7 @@ var merge = require( 'deepmerge' ),
 
 // Overwrite default settings
 conf = merge( conf, {
-	maxInstances: 5,
+	maxInstances: 3,
 
 	services: [ 'sauce' ],
 	user: process.env.SAUCE_USERNAME || '',
