@@ -1,0 +1,28 @@
+diff --git a/extensions/Moderation/modules/ext.moderation.ajaxhook.js b/extensions/Moderation/modules/ext.moderation.ajaxhook.js
+index e16d7d3..bbd734a 100644
+--- a/extensions/Moderation/modules/ext.moderation.ajaxhook.js
++++ b/extensions/Moderation/modules/ext.moderation.ajaxhook.js
+@@ -88,6 +88,7 @@
+ 		@returns New API response (if overwrite is needed) or false (if no need to overwrite).
+ 	*/
+ 	function rewriteAjaxResponse( query, ret ) {
++		console.log( "in rewriteAjaxResponse(): ", query, ret );
+
+ 		/* Check whether we need to overwrite this AJAX response or not */
+ 		if ( !ret.error ) {
+diff --git a/extensions/Moderation/tests/selenium/specs/notify.js b/extensions/Moderation/tests/selenium/specs/notify.js
+index 791bbff..1731628 100644
+--- a/extensions/Moderation/tests/selenium/specs/notify.js
++++ b/extensions/Moderation/tests/selenium/specs/notify.js
+@@ -122,6 +122,11 @@ describe( 'Postedit notification', function () {
+ 		doTestEdit( PageName );
+ 		PostEdit.init();
+
++		if ( MobileFrontend.error ) {
++			console.log( "MobileFrontend.edit() failed!" );
++			browser.debug();
++		}
++
+ 		expect( PostEdit.signupLink.isVisible(), 'signupLink.isVisible' ).to.be.true;
+ 		expect(
+ 			PostEdit.signupLink.query.title,
