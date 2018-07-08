@@ -44,7 +44,7 @@ conf.capabilities = [
 ];
 
 conf.specs = [
-	'specs/visualeditor.js'
+	'specs/notify.js'
 ];
 
 exports.config = conf;
