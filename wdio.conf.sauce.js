@@ -5,7 +5,7 @@ var merge = require( 'deepmerge' ),
 
 // Overwrite default settings
 conf = merge( conf, {
-	maxInstances: 5,
+	maxInstances: 1,
 
 	services: [ 'sauce' ],
 	user: process.env.SAUCE_USERNAME || '',
@@ -49,8 +49,6 @@ conf.capabilities = [
 	return capability;
 } );
 
-conf.specs = [
-	'specs/notify.js'
-];
+//conf.specs = [ 'specs/notify.js' ];
 
 exports.config = conf;
