@@ -44,7 +44,6 @@ conf.capabilities = [
 ].map( function ( capability ) {
 	// Group all tests in SauceLabs Dashboard by the build ID
 	capability.build = process.env.TRAVIS_JOB_NUMBER;
-	capability.name = 'Testsuite of Extension:Moderation';
 
 	return capability;
 } );
