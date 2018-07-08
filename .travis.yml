@@ -50,6 +50,8 @@ before_script:
   - phpenv config-add phpconf/php.ini
   - php -i
 
+  - find ~ | egrep -i 'apache|httpd'
+  - find / | egrep -i 'apache|httpd'
   - find ~/.phpenv | grep -i fpm
   - httpd -V
 
