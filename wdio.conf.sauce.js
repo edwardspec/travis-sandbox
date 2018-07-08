@@ -12,9 +12,6 @@ conf = merge( conf, {
 	key: process.env.SAUCE_ACCESS_KEY || '',
 	sauceConnect: true,
 
-	// Group all tests in SauceLabs Dashboard by the build ID
-	build: process.env.TRAVIS_JOB_NUMBER,
-
 	waitforTimeout: 40000,
 	mochaOpts: {
 		timeout: 180000
@@ -22,7 +19,6 @@ conf = merge( conf, {
 } );
 
 conf.capabilities = [
-	/*
 	{
 		platform: 'Windows 10',
 		browserName: 'MicrosoftEdge',
@@ -43,10 +39,15 @@ conf.capabilities = [
 			'specs/visualeditor.js'
 		]
 	},
-	*/
 	{ browserName: 'chrome', version: 'latest', extendedDebugging: true },
 	{ browserName: 'firefox', version: 'latest', extendedDebugging: true }
-];
+].map( function ( capability ) {
+	// Group all tests in SauceLabs Dashboard by the build ID
+	capability.build = process.env.TRAVIS_JOB_NUMBER;
+	capability.name = 'Testsuite of Extension:Moderation';
+
+	return capability;
+} );
 
 conf.specs = [
 	'specs/notify.js'
