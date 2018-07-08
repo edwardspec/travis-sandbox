@@ -14,6 +14,7 @@ services:
 
 addons:
   apt:
+    update: true
     packages:
       - apache2
       - libapache2-mod-fastcgi
@@ -48,6 +49,9 @@ before_script:
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
+
+  - find ~/.phpenv | grep -i fpm
+  - httpd -V
 
   - bash -ex ./run_apache.sh
   - bash -ex ./run_parsoid.sh "$branch"
