@@ -12,13 +12,6 @@ services:
   - mysql
   - memcached
 
-addons:
-  apt:
-    update: true
-    packages:
-      - apache2
-      - libapache2-mod-fastcgi
-
 env:
   global:
     - DBTYPE=mysql
@@ -50,11 +43,6 @@ before_script:
   - phpenv config-add phpconf/php.ini
   - php -i
 
-  - find ~ | egrep -i 'apache|httpd'
-  - find / | egrep -i 'apache|httpd'
-  - find ~/.phpenv | grep -i fpm
-  - httpd -V
-
   - bash -ex ./run_apache.sh
   - bash -ex ./run_parsoid.sh "$branch"
   - bash -ex ./build_mediawiki.sh "$branch"
@@ -82,8 +70,7 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-#  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
-  - cd ../.. && MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
+  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
