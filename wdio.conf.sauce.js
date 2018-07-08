@@ -5,7 +5,7 @@ var merge = require( 'deepmerge' ),
 
 // Overwrite default settings
 conf = merge( conf, {
-	maxInstances: 3,
+	maxInstances: 5,
 
 	services: [ 'sauce' ],
 	user: process.env.SAUCE_USERNAME || '',
@@ -41,6 +41,10 @@ conf.capabilities = [
 	},
 	{ browserName: 'chrome', version: 'latest', extendedDebugging: true },
 	{ browserName: 'firefox', version: 'latest', extendedDebugging: true }
+];
+
+conf.specs = [
+	'specs/mobilefrontend*.js'
 ];
 
 exports.config = conf;
