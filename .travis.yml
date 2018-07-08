@@ -1,5 +1,5 @@
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 git:
@@ -11,6 +11,12 @@ notifications:
 services:
   - mysql
   - memcached
+
+addons:
+  apt:
+    packages:
+      - apache2
+      - libapache2-mod-fastcgi
 
 env:
   global:
@@ -70,7 +76,8 @@ before_script:
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
 
 script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+#  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+  - cd ../.. && MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
