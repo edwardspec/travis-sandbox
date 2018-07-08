@@ -19,7 +19,6 @@ conf = merge( conf, {
 } );
 
 conf.capabilities = [
-	/*
 	{
 		platform: 'Windows 10',
 		browserName: 'MicrosoftEdge',
@@ -40,9 +39,12 @@ conf.capabilities = [
 			'specs/visualeditor.js'
 		]
 	},
-	*/
 	{ browserName: 'chrome', version: 'latest', extendedDebugging: true },
 	{ browserName: 'firefox', version: 'latest', extendedDebugging: true }
+];
+
+conf.specs = [
+	'specs/mobilefrontend*.js'
 ];
 
 exports.config = conf;
