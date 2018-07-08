@@ -43,8 +43,4 @@ conf.capabilities = [
 	{ browserName: 'firefox', version: 'latest', extendedDebugging: true }
 ];
 
-conf.specs = [
-	'specs/mobilefrontend*.js'
-];
-
 exports.config = conf;
