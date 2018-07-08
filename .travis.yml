@@ -39,6 +39,8 @@ cache:
     - parsoid
 
 before_script:
+  - mysql -u "$DBUSER" -e 'SET GLOBAL innodb_table_locks=0;'
+
   - phpenv config-rm xdebug.ini
   - phpenv config-add phpconf/php.ini
   - php -i
