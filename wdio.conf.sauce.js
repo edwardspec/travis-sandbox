@@ -12,6 +12,9 @@ conf = merge( conf, {
 	key: process.env.SAUCE_ACCESS_KEY || '',
 	sauceConnect: true,
 
+	// Group all tests in SauceLabs Dashboard by the build ID
+	build: process.env.TRAVIS_JOB_NUMBER,
+
 	waitforTimeout: 40000,
 	mochaOpts: {
 		timeout: 180000
