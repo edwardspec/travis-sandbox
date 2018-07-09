@@ -34,6 +34,8 @@ matrix:
 #      php: 7.2
     - env: branch=REL1_27
       php: 7.1
+    - env: branch=REL1_27
+      php: 5.6
 
 cache:
   directories:
@@ -42,8 +44,10 @@ cache:
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - phpenv config-add phpconf/php.ini
+  - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; phpenv config-add phpconf/php7.ini; fi
   - php -i
+
+  - false
 
   - bash -ex ./run_apache.sh
   - bash -ex ./run_parsoid.sh "$branch"
