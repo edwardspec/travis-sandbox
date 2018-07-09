@@ -62,7 +62,7 @@ before_script:
 
 #  - bash -ex ./run_apache.sh
 #  - bash -ex ./run_parsoid.sh "$branch"
-#  - bash -ex ./build_mediawiki.sh "$branch"
+  - bash -ex ./build_mediawiki.sh "$branch"
 
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
