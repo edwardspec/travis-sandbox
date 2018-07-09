@@ -12,7 +12,9 @@ services:
   - memcached
 
 addons:
-  mariadb: '10.3'
+  hosts:
+    - moderation.example.com
+  mariadb: "10.3"
 
 env:
   global:
@@ -24,16 +26,29 @@ env:
     - SAUCE_USERNAME=edwardspec
     - secure: "cuKPGBq98iaEPnlVAs/zTU9o2PrlWkc8RmQ2b65L42wrlL96QynFq0Z35PtyoZJ1zyNiE/Eq3ua6QZ8356qQCLR738s5mdGeQvFy8z81J3TQxjM8CTOsJAUu4m+2YHHEKg1xE6bJsUBmOwny8ezyj8MiHOsQ6qJdIU86rSAbek8Ta/lkge7JAxWIi0c+p4iDEyCUd9MdGtEc9aG68T/GLqEcaCHCNvR/wHmaF3iadBym3auHDl0SMPAjh8eJnxS4r8Q8PLa0tnarh0+iZ3SyLgA1Z4W3SMoTAOGgGpO94av9vfu8tZFW5kNFJHTWmq4p0RGe/UB2xC6mS9zUkfKYW3WDIQhnHTF/pabL5gzX4JCxSi9YYFAhD4z3O+FhM1OJQ/0UKiP0PVuu7t8YmyhiH0UYr0xJrVvjjKkV5sHjDbuaPovC8SmEAKMvCm9QlBJ+Wre2ey4zBB//qbjpuH61FUegcU+xzNEU/b5GWBZBAXyTdTZ6t9dGMyAPHSVjCI1xBWszb9TZX7RNbFKOQmCxxhEkwhMEYB/hbEJ2EnHswV1GVEARrV7gol8ud5y3XmblKJln1u46zpyND1RT4QkWOTXiNLQWRVNts0nAr6rRtVPdlim4joM8dp0F1ao6pJddR6HXsBUXo9ZnGvNHn3B+XG4OX0os+TaQBZ0LOgwGU88="
 
-addons:
-  hosts:
-    - moderation.example.com
-
 matrix:
   include:
-#    - env: branch=REL1_31
-#      php: 7.2
-    - env: branch=REL1_27
+    - &phpunit-stage
+      stage: test
+      script: echo "Running PHPUnit" # MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
+
+    - <<: *phpunit-stage
+      env: branch=REL1_31
+      php: 7.2
+    - <<: *phpunit-stage
+      env: branch=REL1_27
       php: 7.1
+
+    - stage: selenium
+      script: echo "Running wdio" # cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+      env: branch=REL1_31
+      php: 7.2
+
+stages:
+  - name: test
+    if: !branch IN (REL1_23)
+  - name: selenium
+    if: branch IN (selenium,master)
 
 cache:
   directories:
@@ -41,6 +56,8 @@ cache:
     - parsoid
 
 before_script:
+  - echo $TRAVIS_BUILD_STAGE_NAME
+
   - phpenv config-rm xdebug.ini
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
   - php -i
@@ -69,11 +86,8 @@ before_script:
   - cd extensions/Moderation/tests/selenium
   - npm install
   - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
-
-script:
-  - ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+  - cd $TRAVIS_BUILD_DIR/mediawiki
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
-  - sudo ls -lR /var/log/apache2
   - sudo cat /var/log/apache2/error.log
