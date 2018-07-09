@@ -70,6 +70,7 @@ before_script:
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
   - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
+  - cp wdio.conf.sauce.js extensions/Moderation/tests/selenium/
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
@@ -84,5 +85,4 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - cp wdio.conf.sauce.js extensions/Moderation/tests/selenium/
   - ( cd extensions/Moderation/tests/selenium && npm install )
