@@ -43,7 +43,7 @@ conf.capabilities = [
 	{ browserName: 'firefox', version: 'latest' }
 ].map( function ( capability ) {
 	// Group all tests in SauceLabs Dashboard by the build ID
-	capability.build = process.env.TRAVIS_JOB_NUMBER;
+	capability.build = process.env.TRAVIS_JOB_NUMBER + ' [' + process.env.branch + '] - (travis-sandbox) Testsuite of Extension:Moderation';
 
 	return capability;
 } );
