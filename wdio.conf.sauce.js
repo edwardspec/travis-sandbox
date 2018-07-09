@@ -48,6 +48,6 @@ conf.capabilities = [
 	return capability;
 } );
 
-conf.specs = [ 'specs/notify.js' ];
+conf.specs = [ 'specs/notify*.js' ];
 
 exports.config = conf;
