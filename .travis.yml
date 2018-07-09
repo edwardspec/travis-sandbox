@@ -28,10 +28,10 @@ addons:
 
 matrix:
   include:
-    - env: branch=REL1_31
-      php: 7.2
-#    - env: branch=REL1_27
-#      php: 7.1
+#    - env: branch=REL1_31
+#      php: 7.2
+    - env: branch=REL1_27
+      php: 7.1
 
 cache:
   directories:
