@@ -70,7 +70,7 @@ before_script:
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
   - mv mediawiki-moderation-$MODERATION_BRANCH mediawiki/extensions/Moderation
-  - cp wdio.conf.sauce.js extensions/Moderation/tests/selenium/
+  - cp wdio.conf.sauce.js mediawiki/extensions/Moderation/tests/selenium/
   - cd mediawiki
   - >
       php maintenance/install.php traviswiki admin
