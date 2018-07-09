@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: php
 
 git:
@@ -34,13 +34,16 @@ matrix:
   include:
     - &phpunit-stage
       stage: test
-      script: echo "Running PHPUnit" # MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
+      script: MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
     - <<: *phpunit-stage
       env: branch=REL1_27
       php: 7.1
 
     - stage: selenium
-      script: echo "Running wdio" # cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+      after_script:
+        - cat $TRAVIS_BUILD_DIR/parsoid.log
+        - sudo cat /var/log/apache2/error.log
 
 stages:
   - name: test
@@ -60,8 +63,8 @@ before_script:
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
   - php -i
 
-#  - bash -ex ./run_apache.sh
-#  - bash -ex ./run_parsoid.sh "$branch"
+  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then bash -ex ./run_apache.sh; fi
+  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then bash -ex ./run_parsoid.sh "$branch"; fi
   - bash -ex ./build_mediawiki.sh "$branch"
 
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
@@ -81,11 +84,5 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - cd extensions/Moderation/tests/selenium
-  - npm install
-  - cp $TRAVIS_BUILD_DIR/wdio.conf.sauce.js .
-  - cd $TRAVIS_BUILD_DIR/mediawiki
-
-after_script:
-  - cat $TRAVIS_BUILD_DIR/parsoid.log
-  - sudo cat /var/log/apache2/error.log
+  - cp wdio.conf.sauce.js extensions/Moderation/tests/selenium/
+  - ( cd extensions/Moderation/tests/selenium && npm install )
