@@ -1,5 +1,5 @@
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 git:
@@ -44,7 +44,7 @@ cache:
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; phpenv config-add phpconf/php7.ini; fi
+  - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
   - php -i
 
   - false
