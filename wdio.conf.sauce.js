@@ -39,15 +39,13 @@ conf.capabilities = [
 			'specs/visualeditor.js'
 		]
 	},
-	{ browserName: 'chrome', version: 'latest', extendedDebugging: true },
-	{ browserName: 'firefox', version: 'latest', extendedDebugging: true }
+	{ browserName: 'chrome', version: 'latest' },
+	{ browserName: 'firefox', version: 'latest' }
 ].map( function ( capability ) {
 	// Group all tests in SauceLabs Dashboard by the build ID
 	capability.build = process.env.TRAVIS_JOB_NUMBER;
 
 	return capability;
 } );
-
-conf.specs = [ 'specs/notify-anonymous.js' ];
 
 exports.config = conf;
