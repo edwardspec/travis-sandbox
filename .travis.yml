@@ -74,4 +74,5 @@ script:
 
 after_script:
   - cat $TRAVIS_BUILD_DIR/parsoid.log
-
+  - sudo ls -lR /var/log/apache2
+  - sudo cat /var/log/apache2/error.log
