@@ -6,7 +6,7 @@ index e16d7d3..bbd734a 100644
  		@returns New API response (if overwrite is needed) or false (if no need to overwrite).
  	*/
  	function rewriteAjaxResponse( query, ret ) {
-+		console.log( "in rewriteAjaxResponse(): ", query, ret );
++		console.log( "in rewriteAjaxResponse(): ", JSON.stringify( query ), JSON.stringify( ret ) );
 
  		/* Check whether we need to overwrite this AJAX response or not */
  		if ( !ret.error ) {
