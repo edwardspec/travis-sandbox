@@ -48,4 +48,6 @@ conf.capabilities = [
 	return capability;
 } );
 
+conf.specs = [ 'specs/mobilefrontend-preload.js' ];
+
 exports.config = conf;
