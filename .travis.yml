@@ -1,5 +1,5 @@
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 git:
@@ -16,8 +16,12 @@ addons:
     - moderation.example.com
   mariadb: "10.3"
 
+php:
+  - 7.2
+
 env:
   global:
+    - branch=REL1_31
     - DBTYPE=mysql
     - DBUSER=root
     - MODERATION_BRANCH=selenium
@@ -31,18 +35,12 @@ matrix:
     - &phpunit-stage
       stage: test
       script: echo "Running PHPUnit" # MODERATION_TEST_ENGINE=realhttp php tests/phpunit/phpunit.php extensions/Moderation/
-
-    - <<: *phpunit-stage
-      env: branch=REL1_31
-      php: 7.2
     - <<: *phpunit-stage
       env: branch=REL1_27
       php: 7.1
 
     - stage: selenium
       script: echo "Running wdio" # cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
-      env: branch=REL1_31
-      php: 7.2
 
 stages:
   - name: test
@@ -62,9 +60,9 @@ before_script:
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
   - php -i
 
-  - bash -ex ./run_apache.sh
-  - bash -ex ./run_parsoid.sh "$branch"
-  - bash -ex ./build_mediawiki.sh "$branch"
+#  - bash -ex ./run_apache.sh
+#  - bash -ex ./run_parsoid.sh "$branch"
+#  - bash -ex ./build_mediawiki.sh "$branch"
 
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
   - unzip $MODERATION_BRANCH.zip
