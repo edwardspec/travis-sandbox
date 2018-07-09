@@ -9,8 +9,10 @@ notifications:
   email: false
 
 services:
-  - mysql
   - memcached
+
+addons:
+  mariadb: '10.3'
 
 env:
   global:
