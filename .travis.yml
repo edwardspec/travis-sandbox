@@ -85,4 +85,5 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - ( cd extensions/Moderation/tests/selenium && npm install )
+  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
+

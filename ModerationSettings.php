@@ -30,12 +30,12 @@ wfLoadExtensions( [
 ] );
 
 # Default skin for Extension:MobileFrontend
-if ( version_compare( $wgVersion, '1.30', '>=' ) ) {
+if ( version_compare( $wgVersion, '1.30.0', '>=' ) ) {
 	# MediaWiki 1.27-1.29 have this skin included into MobileFrontend
 	wfLoadSkin( 'MinervaNeue' );
 }
 
-# Parsoid configuration (used by Extrension:VisualEditor)
+# Parsoid configuration (used by Extension:VisualEditor)
 $wgVirtualRestConfig['modules']['parsoid'] = [
 	'url' => 'http://moderation.example.com:8142',
 	'domain' => 'moderation.example.com'
