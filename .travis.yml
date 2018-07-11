@@ -36,10 +36,12 @@ env:
 matrix:
   include:
     - &phpunit-build
-      env: TESTSUITE_TYPE=phpunit
+      env:
+        - TESTSUITE_TYPE=phpunit
       script: MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
     - <<: *phpunit-build
-      env: branch=REL1_27
+      env:
+        - branch=REL1_27
       php: 7.1
 
     - &selenium-build
