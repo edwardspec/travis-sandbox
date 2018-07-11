@@ -2,6 +2,8 @@ dist: trusty
 sudo: true
 language: php
 
+conditions: v1
+
 git:
   depth: 1
 
@@ -30,26 +32,22 @@ env:
     - SAUCE_USERNAME=edwardspec
     - secure: "cuKPGBq98iaEPnlVAs/zTU9o2PrlWkc8RmQ2b65L42wrlL96QynFq0Z35PtyoZJ1zyNiE/Eq3ua6QZ8356qQCLR738s5mdGeQvFy8z81J3TQxjM8CTOsJAUu4m+2YHHEKg1xE6bJsUBmOwny8ezyj8MiHOsQ6qJdIU86rSAbek8Ta/lkge7JAxWIi0c+p4iDEyCUd9MdGtEc9aG68T/GLqEcaCHCNvR/wHmaF3iadBym3auHDl0SMPAjh8eJnxS4r8Q8PLa0tnarh0+iZ3SyLgA1Z4W3SMoTAOGgGpO94av9vfu8tZFW5kNFJHTWmq4p0RGe/UB2xC6mS9zUkfKYW3WDIQhnHTF/pabL5gzX4JCxSi9YYFAhD4z3O+FhM1OJQ/0UKiP0PVuu7t8YmyhiH0UYr0xJrVvjjKkV5sHjDbuaPovC8SmEAKMvCm9QlBJ+Wre2ey4zBB//qbjpuH61FUegcU+xzNEU/b5GWBZBAXyTdTZ6t9dGMyAPHSVjCI1xBWszb9TZX7RNbFKOQmCxxhEkwhMEYB/hbEJ2EnHswV1GVEARrV7gol8ud5y3XmblKJln1u46zpyND1RT4QkWOTXiNLQWRVNts0nAr6rRtVPdlim4joM8dp0F1ao6pJddR6HXsBUXo9ZnGvNHn3B+XG4OX0os+TaQBZ0LOgwGU88="
 
+
 matrix:
   include:
-    - &phpunit-stage
-      stage: test
+    - &phpunit-build
+      env: TESTSUITE_TYPE=phpunit
       script: MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
-    - <<: *phpunit-stage
+    - <<: *phpunit-build
       env: branch=REL1_27
       php: 7.1
 
-    - stage: selenium
+    - &selenium-build
+      env: TESTSUITE_TYPE=selenium
       script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
       after_script:
         - cat $TRAVIS_BUILD_DIR/parsoid.log
         - sudo cat /var/log/apache2/error.log
-
-stages:
-  - name: test
-    if: !branch IN (REL1_23)
-  - name: selenium
-    if: branch IN (selenium,master)
 
 cache:
   directories:
@@ -57,14 +55,15 @@ cache:
     - parsoid
 
 before_script:
-  - echo $TRAVIS_BUILD_STAGE_NAME
+  - echo $TESTSUITE_TYPE
+  - false # Don't run the testsuite yet, just check if the matrix builds are selected correctly
 
   - phpenv config-rm xdebug.ini
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
   - php -i
 
-  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then bash -ex ./run_apache.sh; fi
-  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then bash -ex ./run_parsoid.sh "$branch"; fi
+  - if [ ${TESTSUITE_TYPE} = "selenium" ]; then bash -ex ./run_apache.sh; fi
+  - if [ ${TESTSUITE_TYPE} = "selenium" ]; then bash -ex ./run_parsoid.sh "$branch"; fi
   - bash -ex ./build_mediawiki.sh "$branch"
 
   - wget https://github.com/edwardspec/mediawiki-moderation/archive/$MODERATION_BRANCH.zip
@@ -85,5 +84,5 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
-  - if [ ${TRAVIS_BUILD_STAGE_NAME} = "Selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
+  - if [ ${TESTSUITE_TYPE} = "selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
 
