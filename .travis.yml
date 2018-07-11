@@ -1,5 +1,5 @@
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 conditions: v1
@@ -24,6 +24,7 @@ php:
 env:
   global:
     - branch=REL1_31
+    - TESTSUITE_TYPE=phpunit
     - DBTYPE=mysql
     - DBUSER=root
     - MODERATION_BRANCH=selenium
@@ -36,16 +37,20 @@ env:
 matrix:
   include:
     - &phpunit-build
-      env:
-        - TESTSUITE_TYPE=phpunit
       script: MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
     - <<: *phpunit-build
-      env:
-        - branch=REL1_27
+      env: branch=REL1_27
       php: 7.1
 
     - &selenium-build
       env: TESTSUITE_TYPE=selenium
+      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
+      after_script:
+        - cat $TRAVIS_BUILD_DIR/parsoid.log
+        - sudo cat /var/log/apache2/error.log
+
+    - &selenium-build
+      env: branch=REL1_27 TESTSUITE_TYPE=selenium
       script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
       after_script:
         - cat $TRAVIS_BUILD_DIR/parsoid.log
