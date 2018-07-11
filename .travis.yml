@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: php
 
 conditions: v1
@@ -41,16 +41,12 @@ matrix:
     - <<: *phpunit-build
       env: branch=REL1_27
       php: 7.1
+    - <<: *phpunit-build
+      env: branch=REL1_27
+      php: 5.6
 
     - &selenium-build
       env: TESTSUITE_TYPE=selenium
-      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
-      after_script:
-        - cat $TRAVIS_BUILD_DIR/parsoid.log
-        - sudo cat /var/log/apache2/error.log
-
-    - &selenium-build
-      env: branch=REL1_27 TESTSUITE_TYPE=selenium
       script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
       after_script:
         - cat $TRAVIS_BUILD_DIR/parsoid.log
@@ -63,7 +59,6 @@ cache:
 
 before_script:
   - echo $TESTSUITE_TYPE
-  - false # Don't run the testsuite yet, just check if the matrix builds are selected correctly
 
   - phpenv config-rm xdebug.ini
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
