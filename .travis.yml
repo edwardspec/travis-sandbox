@@ -1,5 +1,5 @@
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 conditions: v1
@@ -35,6 +35,8 @@ env:
 
 
 matrix:
+  allow_failures:
+    - env: TESTSUITE_TYPE=selenium
   include:
     - &phpunit-build
       script: MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
@@ -58,7 +60,7 @@ cache:
     - parsoid
 
 before_script:
-  - echo $TESTSUITE_TYPE
+  - echo $TESTSUITE_TYPE && fail
 
   - phpenv config-rm xdebug.ini
   - if [ ${TRAVIS_PHP_VERSION:0:1} = "7" ]; then phpenv config-add phpconf/php7.ini; fi
