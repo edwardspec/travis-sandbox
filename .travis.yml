@@ -38,9 +38,9 @@ matrix:
   allow_failures:
     - env: TESTSUITE_TYPE=selenium
   include:
-    - &phpunit-build
-      script:
-        - false || true # MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
+#    - &phpunit-build
+#      script:
+#        - MODERATION_TEST_ENGINE=cli php tests/phpunit/phpunit.php extensions/Moderation/tests/phpunit/ModerationInterceptEditTest.php
 #    - <<: *phpunit-build
 #      env: branch=REL1_27
 #      php: 7.1
@@ -48,12 +48,12 @@ matrix:
 #      env: branch=REL1_27
 #      php: 5.6
 
-#    - &selenium-build
-#      env: TESTSUITE_TYPE=selenium
-#      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/'
-#      after_script:
-#        - cat $TRAVIS_BUILD_DIR/parsoid.log
-#        - sudo cat /var/log/apache2/error.log
+    - &selenium-build
+      env: TESTSUITE_TYPE=selenium
+      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/notify.js
+      after_script:
+        - cat $TRAVIS_BUILD_DIR/parsoid.log
+        - sudo cat /var/log/apache2/error.log
 
 cache:
   directories:
@@ -90,4 +90,3 @@ before_script:
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
   - if [ ${TESTSUITE_TYPE} = "selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
-
