@@ -94,6 +94,5 @@ before_script:
   # This avoids T199393 (deadlock bug in CreateAccount).
   # Note: only 15 accounts are needed, 100 accounts are created for more accurate measurement of how fast this is.
   - time for idx in {1..100}; do USERNAME="AutoUser $idx" php maintenance/createAndPromote.php "$USERNAME" '123456'; echo "$USERNAME" >>TestAccounts.list; done
-
-  i=0; while true; do echo $i; (( i++ )); time ( php maintenance/createAndPromote.php "AutoUser $i" '123456' & ); sleep 1; done
+  #
   - if [ ${TESTSUITE_TYPE} = "selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
