@@ -50,7 +50,7 @@ matrix:
 
     - &selenium-build
       env: TESTSUITE_TYPE=selenium
-      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/notify.js
+      script: cd extensions/Moderation/tests/selenium && ./node_modules/.bin/wdio wdio.conf.sauce.js --baseUrl 'http://moderation.example.com/mediawiki/' --spec specs/mobilefrontend-ajaxhook.js
       after_script:
         - cat $TRAVIS_BUILD_DIR/parsoid.log
         - sudo cat /var/log/apache2/error.log
@@ -89,4 +89,11 @@ before_script:
   - php -l ./LocalSettings.php
   - php maintenance/update.php --quick
   - php maintenance/createAndPromote.php "$MEDIAWIKI_USER" "$MEDIAWIKI_PASSWORD" --custom-groups moderator,automoderated
+
+  # Quickly create several test accounts, enough for all tests that need a test account.
+  # This avoids T199393 (deadlock bug in CreateAccount).
+  # Note: only 15 accounts are needed, 100 accounts are created for more accurate measurement of how fast this is.
+  - time for idx in {1..100}; do USERNAME="AutoUser $idx" php maintenance/createAndPromote.php "$USERNAME" '123456'; echo "$USERNAME" >>TestAccounts.list; done
+
+  i=0; while true; do echo $i; (( i++ )); time ( php maintenance/createAndPromote.php "AutoUser $i" '123456' & ); sleep 1; done
   - if [ ${TESTSUITE_TYPE} = "selenium" ]; then ( cd extensions/Moderation/tests/selenium && npm install ); fi
