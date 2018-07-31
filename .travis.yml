@@ -1,7 +1,7 @@
 if: commit_message !~ /^\(doc\)/
 
 dist: trusty
-sudo: true
+sudo: false
 language: php
 
 conditions: v1
