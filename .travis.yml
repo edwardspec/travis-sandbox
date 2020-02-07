@@ -1,6 +1,6 @@
-dist: trusty
-sudo: false
-language: minimal
+dist: bionic
+language: php
+php: 7.2
 
 git:
   depth: 1
@@ -9,16 +9,6 @@ notifications:
   email: false
 
 script:
-  - for i in $(seq 100); do echo "Test file $1" >sampleAsset$i.txt; done
-
-before_deploy:
-  - git tag TestRelease
-
-deploy:
-  provider: releases
-  api_key:
-    secure: "XJHiELxPaOTokaG9rp72TEMCWbDI/ruDFL9iAb5tW+2Bg0AVH2WjSAmPIXeCdPt5n94zOeMQTq/yU6n6CGOzRBb3nMUIBTLqPIg1dpIXpfViDCpO15IGcU/sZlkjc1fstdY17tRGzp3mAxybuaEBwonYAfLmxK3A3fUY2oUzrXZlZrq3XMzX8F6QQ7eokgQYejpvImwpA1D5Vsv/C+NqbXpitis92dXU6bQyRt1DanMBqxwIJTJmsRw+Z2PH1HlCAX13fgPgTCXmqiJxwh2H/mGDJ/Z3CrmAMcB3JfyPqREgh0dW6F//cnkREf4cQPmXeblSNTWc3WWCAnjmX2Q/020ZmVPP1UDRVLeVekWniXzGhP8EYNGMlHM8wRIVMp8Y5Zzxc9Zc+Ie5AN0iUuylRxz7sTnhSDcRvNoiNkR5BK67xadkIKLQhjks3OWW9sp6DGJG7ZCLBHHOkF8GliYzeEDrnYVJ8axz/pPIjiMimo7C3WWPe47irOjin1VKZWp2DHD08DB7bvSIpSKIVgL2z3cuWN54Ofys7Mw66I1CHL2yrNBu1mhAVF3eUj84dTjtbr7CeChRHV1Nc/3tWpECfcqoH0FXPJX+dIoyKG27Z0H+AKycftRRhA+JbH9JLNINjZgoCLdsMbrolF/QNGzG+5R+M8PLeS4hotP+t3vigJ8="
-  file_glob: true
-  file: sampleAsset*.txt
-  skip_cleanup: true
-  overwrite: true
+  - sudo apt update
+  - sudo apt install -y php7.2-dba
+  - php -i
